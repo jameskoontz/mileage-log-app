@@ -820,6 +820,7 @@
             // State for user-managed school list from CSV and saved commute mileage
             const [userLocations, setUserLocations] = useState([]);
             const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
+            const [apiKey, setApiKey] = useState('');
             
             // UI and API states
             const [isLoading, setIsLoading] = useState(false);
@@ -835,7 +836,7 @@
             const searchRef = useRef(null);
             const outputTableRef = useRef(null);
 
-            // Memoize location objects to prevent unnecessary re-renders
+            // Memoize location objects
             const homeLocation = useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
             const workLocation = useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
 
@@ -849,6 +850,7 @@
                         const savedUserLocs = localStorage.getItem('userMileageLocations');
                         const savedHistory = localStorage.getItem('mileageAppHistory');
                         const savedMonthlyTotals = localStorage.getItem('mileageAppMonthlyTotals');
+                        const savedApiKey = localStorage.getItem('mileageAppApiKey');
 
                         if (savedHome) setHomeAddress(JSON.parse(savedHome));
                         if (savedWork) setWorkAddress(JSON.parse(savedWork));
@@ -856,6 +858,7 @@
                         if (savedUserLocs) setUserLocations(JSON.parse(savedUserLocs));
                         if (savedHistory) setHistory(JSON.parse(savedHistory));
                         if (savedMonthlyTotals) setMonthlyTotals(JSON.parse(savedMonthlyTotals));
+                        if (savedApiKey) setApiKey(JSON.parse(savedApiKey));
                     } catch (e) {
                         console.error("Failed to parse data from localStorage", e);
                         setError("Could not load saved data. It might be corrupted.");
@@ -873,20 +876,19 @@
                     localStorage.setItem('userMileageLocations', JSON.stringify(userLocations));
                     localStorage.setItem('mileageAppHistory', JSON.stringify(history));
                     localStorage.setItem('mileageAppMonthlyTotals', JSON.stringify(monthlyTotals));
+                    localStorage.setItem('mileageAppApiKey', JSON.stringify(apiKey));
                 } catch (e) {
                     console.error("Failed to save data to localStorage", e);
                     setError("Could not save data. Changes may not persist.");
                 }
-            }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals]);
+            }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals, apiKey]);
             
-            // Combine LAUSD list with user-saved locations
             const combinedLocations = useMemo(() => {
                 const allLocations = [...hardcodedLausdLocations, ...userLocations];
                 const uniqueLocations = Array.from(new Map(allLocations.map(loc => [loc.address.toLowerCase(), loc])).values());
                 return uniqueLocations.sort((a, b) => a.name.localeCompare(b.name));
             }, [userLocations]);
 
-            // Set the next "From" location
             useEffect(() => {
                 if (trips.length > 0) {
                     setFromLocation(trips[trips.length - 1].to);
@@ -896,7 +898,6 @@
                 setToLocation({ name: '', address: '' });
             }, [trips, homeLocation]);
 
-            // Close dropdown on outside click
             useEffect(() => {
                 const handleClickOutside = (event) => {
                     if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -909,6 +910,10 @@
 
             const getMileage = async (fromAddr, toAddr) => {
                 setError(null);
+                if (!apiKey) {
+                    setError("Please enter your Gemini API Key to calculate mileage.");
+                    return null;
+                }
                 if (!fromAddr || !toAddr) {
                     setError("Cannot calculate mileage for empty addresses.");
                     return null;
@@ -917,10 +922,9 @@
                 
                 try {
                     const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-                    const apiKey = "";
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) throw new Error(`API request failed: ${response.statusText}`);
+                    if (!response.ok) throw new Error(`API request failed: ${response.statusText || response.status}`);
                     const result = await response.json();
                     if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
                         const text = result.candidates[0].content.parts[0].text;
@@ -1149,6 +1153,19 @@
                             <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
                                 <h2 className="text-2xl font-semibold border-b pb-3 text-slate-800">Trip Entry</h2>
                                 
+                                {/* --- API Key Input --- */}
+                                <div className="space-y-2">
+                                    <label htmlFor="api-key" className="font-medium text-slate-700">Your Gemini API Key</label>
+                                    <input 
+                                        type="password" 
+                                        id="api-key" 
+                                        value={apiKey} 
+                                        onChange={e => setApiKey(e.target.value)} 
+                                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Paste your API key here"
+                                    />
+                                </div>
+
                                 {/* --- Address Setup --- */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
