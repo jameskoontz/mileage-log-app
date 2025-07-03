@@ -16,7 +16,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- SVG Icon Components ---
+        // --- SVG Icon Components (Self-Contained) ---
         const Home = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>);
         const School = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 5v17"/><path d="M6 5v17"/><path d="M12 5v17"/></svg>);
         const PlusCircle = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>);
@@ -803,42 +803,42 @@
 
         const App = () => {
             // State for trips and logs
-            const [trips, setTrips] = useState([]);
-            const [history, setHistory] = useState([]);
-            const [monthlyTotals, setMonthlyTotals] = useState([]);
+            const [trips, setTrips] = React.useState([]);
+            const [history, setHistory] = React.useState([]);
+            const [monthlyTotals, setMonthlyTotals] = React.useState([]);
 
             // State for locations
-            const [fromLocation, setFromLocation] = useState({ name: '', address: '' });
-            const [toLocation, setToLocation] = useState({ name: '', address: '' });
-            const [homeAddress, setHomeAddress] = useState('123 Main St, Los Angeles, CA 90012');
-            const [workAddress, setWorkAddress] = useState('333 S Beaudry Ave, Los Angeles, CA 90017');
-            const [isEditingHome, setIsEditingHome] = useState(false);
-            const [isEditingWork, setIsEditingWork] = useState(false);
+            const [fromLocation, setFromLocation] = React.useState({ name: '', address: '' });
+            const [toLocation, setToLocation] = React.useState({ name: '', address: '' });
+            const [homeAddress, setHomeAddress] = React.useState('123 Main St, Los Angeles, CA 90012');
+            const [workAddress, setWorkAddress] = React.useState('333 S Beaudry Ave, Los Angeles, CA 90017');
+            const [isEditingHome, setIsEditingHome] = React.useState(false);
+            const [isEditingWork, setIsEditingWork] = React.useState(false);
             
             // State for user-managed school list from CSV and saved commute mileage
-            const [userLocations, setUserLocations] = useState([]);
-            const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
+            const [userLocations, setUserLocations] = React.useState([]);
+            const [manualCommuteMiles, setManualCommuteMiles] = React.useState(20);
             
             // UI and API states
-            const [isLoading, setIsLoading] = useState(false);
-            const [error, setError] = useState(null);
-            const [isCopied, setIsCopied] = useState(false);
-            const [showAddForm, setShowAddForm] = useState(false);
-            const [newLocName, setNewLocName] = useState('');
-            const [newLocAddress, setNewLocAddress] = useState('');
-            const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+            const [isLoading, setIsLoading] = React.useState(false);
+            const [error, setError] = React.useState(null);
+            const [isCopied, setIsCopied] = React.useState(false);
+            const [showAddForm, setShowAddForm] = React.useState(false);
+            const [newLocName, setNewLocName] = React.useState('');
+            const [newLocAddress, setNewLocAddress] = React.useState('');
+            const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().split('T')[0]);
 
-            const [filteredLocations, setFilteredLocations] = useState([]);
-            const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-            const searchRef = useRef(null);
-            const outputTableRef = useRef(null);
+            const [filteredLocations, setFilteredLocations] = React.useState([]);
+            const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
+            const searchRef = React.useRef(null);
+            const outputTableRef = React.useRef(null);
 
             // Memoize location objects to prevent unnecessary re-renders
-            const homeLocation = useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
-            const workLocation = useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
+            const homeLocation = React.useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
+            const workLocation = React.useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
 
             // Load all saved data from localStorage on initial render
-            useEffect(() => {
+            React.useEffect(() => {
                 const loadData = () => {
                     try {
                         const savedHome = localStorage.getItem('mileageAppHome');
@@ -863,7 +863,7 @@
             }, []);
 
             // Effect to save data to localStorage whenever it changes
-            useEffect(() => {
+            React.useEffect(() => {
                 try {
                     localStorage.setItem('mileageAppHome', JSON.stringify(homeAddress));
                     localStorage.setItem('mileageAppWork', JSON.stringify(workAddress));
@@ -878,14 +878,14 @@
             }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals]);
             
             // Combine LAUSD list with user-saved locations
-            const combinedLocations = useMemo(() => {
-                const allLocations = [...allLausdLocations, ...userLocations];
+            const combinedLocations = React.useMemo(() => {
+                const allLocations = [...hardcodedLausdLocations, ...userLocations];
                 const uniqueLocations = Array.from(new Map(allLocations.map(loc => [loc.address.toLowerCase(), loc])).values());
                 return uniqueLocations.sort((a, b) => a.name.localeCompare(b.name));
             }, [userLocations]);
 
             // Set the next "From" location
-            useEffect(() => {
+            React.useEffect(() => {
                 if (trips.length > 0) {
                     setFromLocation(trips[trips.length - 1].to);
                 } else {
@@ -895,7 +895,7 @@
             }, [trips, homeLocation]);
 
             // Close dropdown on outside click
-            useEffect(() => {
+            React.useEffect(() => {
                 const handleClickOutside = (event) => {
                     if (searchRef.current && !searchRef.current.contains(event.target)) {
                         setIsDropdownVisible(false);
