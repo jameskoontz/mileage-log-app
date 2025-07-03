@@ -36,7 +36,7 @@
 
         // The school list below is populated from the user-provided file: "lausd schools for gemini 250703-1.csv".
         const hardcodedLausdLocations = [
-            { name: "107th St El", address: "147 E 107TH ST, LOS ANGELES, CA 90003" },
+ { name: "107th St El", address: "147 E 107TH ST, LOS ANGELES, CA 90003" },
             { name: "109th St El", address: "10915 S MC KINLEY AVE, LOS ANGELES, CA 90059" },
             { name: "10th St El", address: "1000 GRATTAN ST, LOS ANGELES, CA 90015" },
             { name: "112th St El", address: "1265 E 112TH ST, LOS ANGELES, CA 90059" },
@@ -820,7 +820,6 @@
             // State for user-managed school list from CSV and saved commute mileage
             const [userLocations, setUserLocations] = useState([]);
             const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
-            const [apiKey, setApiKey] = useState('');
             
             // UI and API states
             const [isLoading, setIsLoading] = useState(false);
@@ -850,7 +849,6 @@
                         const savedUserLocs = localStorage.getItem('userMileageLocations');
                         const savedHistory = localStorage.getItem('mileageAppHistory');
                         const savedMonthlyTotals = localStorage.getItem('mileageAppMonthlyTotals');
-                        const savedApiKey = localStorage.getItem('mileageAppApiKey');
 
                         if (savedHome) setHomeAddress(JSON.parse(savedHome));
                         if (savedWork) setWorkAddress(JSON.parse(savedWork));
@@ -858,7 +856,6 @@
                         if (savedUserLocs) setUserLocations(JSON.parse(savedUserLocs));
                         if (savedHistory) setHistory(JSON.parse(savedHistory));
                         if (savedMonthlyTotals) setMonthlyTotals(JSON.parse(savedMonthlyTotals));
-                        if (savedApiKey) setApiKey(JSON.parse(savedApiKey));
                     } catch (e) {
                         console.error("Failed to parse data from localStorage", e);
                         setError("Could not load saved data. It might be corrupted.");
@@ -876,12 +873,11 @@
                     localStorage.setItem('userMileageLocations', JSON.stringify(userLocations));
                     localStorage.setItem('mileageAppHistory', JSON.stringify(history));
                     localStorage.setItem('mileageAppMonthlyTotals', JSON.stringify(monthlyTotals));
-                    localStorage.setItem('mileageAppApiKey', JSON.stringify(apiKey));
                 } catch (e) {
                     console.error("Failed to save data to localStorage", e);
                     setError("Could not save data. Changes may not persist.");
                 }
-            }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals, apiKey]);
+            }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals]);
             
             const combinedLocations = useMemo(() => {
                 const allLocations = [...hardcodedLausdLocations, ...userLocations];
@@ -908,34 +904,44 @@
                 return () => document.removeEventListener("mousedown", handleClickOutside);
             }, []);
 
+            const getCoords = async (address) => {
+                const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('Geocoding failed');
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        return { lat: data[0].lat, lon: data[0].lon };
+                    }
+                    throw new Error('Address not found');
+                } catch (err) {
+                    console.error("Geocoding error:", err);
+                    setError(`Could not find coordinates for: ${address}`);
+                    return null;
+                }
+            };
+            
             const getMileage = async (fromAddr, toAddr) => {
                 setError(null);
-                if (!apiKey) {
-                    setError("Please enter your Gemini API Key to calculate mileage.");
-                    return null;
-                }
-                if (!fromAddr || !toAddr) {
-                    setError("Cannot calculate mileage for empty addresses.");
-                    return null;
-                }
-                const prompt = `What is the shortest driving distance in miles between "${fromAddr}" and "${toAddr}", ignoring all traffic conditions? Please respond with only the numerical value, rounded to the nearest whole number. For example: 12`;
-                
+                const [fromCoords, toCoords] = await Promise.all([getCoords(fromAddr), getCoords(toAddr)]);
+
+                if (!fromCoords || !toCoords) return null;
+
+                const url = `https://router.project-osrm.org/route/v1/driving/${fromCoords.lon},${fromCoords.lat};${toCoords.lon},${toCoords.lat}?overview=false`;
+
                 try {
-                    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) throw new Error(`API request failed: ${response.statusText || response.status}`);
-                    const result = await response.json();
-                    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        const match = text.match(/(\d+)/);
-                        if (match) return Math.round(parseFloat(match[0]));
-                        throw new Error("Could not parse distance from the API response.");
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('Routing API request failed');
+                    const data = await response.json();
+                    if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+                        const distanceInMeters = data.routes[0].distance;
+                        const distanceInMiles = distanceInMeters * 0.000621371;
+                        return Math.round(distanceInMiles);
                     }
-                    throw new Error("Unexpected API response format.");
+                    throw new Error('Route not found');
                 } catch (err) {
-                    console.error("Error fetching mileage:", err);
-                    setError(`Mileage API Error: ${err.message}`);
+                    console.error("OSRM error:", err);
+                    setError(`Could not calculate route. ${err.message}`);
                     return null;
                 }
             };
@@ -1153,19 +1159,6 @@
                             <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
                                 <h2 className="text-2xl font-semibold border-b pb-3 text-slate-800">Trip Entry</h2>
                                 
-                                {/* --- API Key Input --- */}
-                                <div className="space-y-2">
-                                    <label htmlFor="api-key" className="font-medium text-slate-700">Your Gemini API Key</label>
-                                    <input 
-                                        type="password" 
-                                        id="api-key" 
-                                        value={apiKey} 
-                                        onChange={e => setApiKey(e.target.value)} 
-                                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Paste your API key here"
-                                    />
-                                </div>
-
                                 {/* --- Address Setup --- */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
