@@ -1,32 +1,1389 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mileage Log Generator</title>
-    
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- React Libraries -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
     <!-- Babel to transpile JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
-
-  </head>
-  <body>
+</head>
+<body>
     <div id="root"></div>
 
-    <script type="text/babel" data-type="module" src="App.js"></script>
-
     <script type="text/babel">
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<App />);
+        // --- SVG Icon Components ---
+        const Home = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>);
+        const School = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 5v17"/><path d="M6 5v17"/><path d="M12 5v17"/></svg>);
+        const PlusCircle = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>);
+        const Trash2 = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>);
+        const Copy = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>);
+        const Loader2 = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>);
+        const ClipboardCopy = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>);
+        const Search = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>);
+        const X = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>);
+        const Save = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>);
+        const Briefcase = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>);
+        const Calendar = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>);
+        const CheckCircle = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
+        const Download = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>);
+        const Pencil = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="2" x2="22" y2="6"/><path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"/></svg>);
+        const FileBarChart2 = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 18v-2"/><path d="M12 18v-4"/><path d="M16 18v-6"/></svg>);
+
+        // The school list below is populated from the user-provided file: "lausd schools for gemini 250703-1.csv".
+        const hardcodedLausdLocations = [
+            { name: "107th St El", address: "147 E 107TH ST, LOS ANGELES, CA 90003" },
+            { name: "109th St El", address: "10915 S MC KINLEY AVE, LOS ANGELES, CA 90059" },
+            { name: "10th St El", address: "1000 GRATTAN ST, LOS ANGELES, CA 90015" },
+            { name: "112th St El", address: "1265 E 112TH ST, LOS ANGELES, CA 90059" },
+            { name: "116th St El", address: "11610 STANFORD AVE, LOS ANGELES, CA 90059" },
+            { name: "118th St El", address: "144 E 118TH ST, LOS ANGELES, CA 90061" },
+            { name: "122nd St El", address: "405 E 122ND ST, LOS ANGELES, CA 90061" },
+            { name: "135th St El", address: "801 W 135TH ST, GARDENA, CA 90247" },
+            { name: "153rd St El", address: "1605 W 153RD ST, GARDENA, CA 90247" },
+            { name: "156th St El", address: "2100 W 156TH ST, GARDENA, CA 90249" },
+            { name: "15th St El", address: "1527 S MESA ST, SAN PEDRO, CA 90731" },
+            { name: "186th St El", address: "1581 W 186TH ST, GARDENA, CA 90248" },
+            { name: "1st St El", address: "2820 E FIRST ST, LOS ANGELES, CA 90033" },
+            { name: "20th St El", address: "1358 WALNUT ST, LOS ANGELES, CA 90011" },
+            { name: "232nd Pl El", address: "23240 ARCHIBALD AVE, CARSON, CA 90745" },
+            { name: "24th St El", address: "2055 W 24TH ST, LOS ANGELES, CA 90018" },
+            { name: "28th St El", address: "2807 STANFORD AVE, LOS ANGELES, CA 90011" },
+            { name: "2nd St El", address: "1942 E 2ND ST, LOS ANGELES, CA 90033" },
+            { name: "32nd St USC PA Mag", address: "822 W 32ND ST, LOS ANGELES, CA 90007" },
+            { name: "3rd St El", address: "201 S JUNE ST, LOS ANGELES, CA 90004" },
+            { name: "42nd St El", address: "4231 4TH AVE, LOS ANGELES, CA 90008" },
+            { name: "49th St El", address: "750 E 49TH ST, LOS ANGELES, CA 90011" },
+            { name: "4th St El", address: "420 S AMALIA AVE, LOS ANGELES, CA 90022" },
+            { name: "4th St PC", address: "469 AMALIA AVE, LOS ANGELES, CA 90022" },
+            { name: "52nd St El", address: "816 W 51ST ST, LOS ANGELES, CA 90037" },
+            { name: "54th St El", address: "5501 S EILEEN AVE, LOS ANGELES, CA 90043" },
+            { name: "59th St El", address: "5939 SECOND AVE, LOS ANGELES, CA 90043" },
+            { name: "61st St El", address: "6020 S FIGUEROA ST, LOS ANGELES, CA 90003" },
+            { name: "66th St El", address: "6600 S SAN PEDRO ST, LOS ANGELES, CA 90003" },
+            { name: "6th Ave El", address: "3109 6TH AVE, LOS ANGELES, CA 90018" },
+            { name: "74th St El", address: "2112 W 74TH ST, LOS ANGELES, CA 90047" },
+            { name: "75th St El", address: "142 W 75TH ST, LOS ANGELES, CA 90003" },
+            { name: "7th St El AI Mag", address: "1570 W 7TH ST, SAN PEDRO, CA 90732" },
+            { name: "92nd St El", address: "9211 GRAPE ST, LOS ANGELES, CA 90002" },
+            { name: "93rd St El", address: "330 E 93RD ST, LOS ANGELES, CA 90003" },
+            { name: "95th St El", address: "1109 W 96TH ST, LOS ANGELES, CA 90044" },
+            { name: "96th St El", address: "1471 E 96TH ST, LOS ANGELES, CA 90002" },
+            { name: "99th St El", address: "9900 S WADSWORTH AVE, LOS ANGELES, CA 90002" },
+            { name: "9th St El", address: "835 STANFORD AVE, LOS ANGELES, CA 90021" },
+            { name: "Acad Enrich Sci Mag", address: "17551 MIRANDA ST, ENCINO, CA 91316" },
+            { name: "Adams MS", address: "151 W 30TH ST, LOS ANGELES, CA 90007" },
+            { name: "Addams HS", address: "16341 DONMETZ ST, GRANADA HILLS, CA 91344" },
+            { name: "Aggeler HS", address: "21050 PLUMMER ST, CHATSWORTH, CA 91311" },
+            { name: "Albion St El", address: "322 S AVENUE 18, LOS ANGELES, CA 90031" },
+            { name: "Aldama El", address: "632 N AVENUE 50, LOS ANGELES, CA 90042" },
+            { name: "Alexander SCS", address: "3737 S FIGUEROA ST, LOS ANGELES, CA 90007" },
+            { name: "Alexandria Ave El", address: "4211 OAKWOOD AVE, LOS ANGELES, CA 90004" },
+            { name: "Alfonso B Perez Special Education Center", address: "4540 Michigan Ave, Los Angeles, CA 90022" },
+            { name: "Allesandro El", address: "2210 RIVERSIDE DR, LOS ANGELES, CA 90039" },
+            { name: "Alta California El", address: "14859 RAYEN ST, PANORAMA CITY, CA 91402" },
+            { name: "Alta Loma El", address: "1745 VINEYARD AVE, LOS ANGELES, CA 90019" },
+            { name: "Amanecer PC", address: "832 S EASTMAN AVE, LOS ANGELES, CA 90023" },
+            { name: "Ambler Ave El", address: "319 E SHERMAN DR, CARSON, CA 90746" },
+            { name: "Amestoy El", address: "1048 W 149TH ST, GARDENA, CA 90247" },
+            { name: "Anatola Ave El", address: "7364 ANATOLA AVE, LAKE BALBOA, CA 91406" },
+            { name: "Andasol Ave El", address: "10126 ENCINO AVE, NORTHRIDGE, CA 91325" },
+            { name: "Angel's Gate HS", address: "3607 S GAFFEY ST, SAN PEDRO, CA 90731" },
+            { name: "Angeles Mesa El", address: "2611 W 52ND ST, LOS ANGELES, CA 90043" },
+            { name: "Angelou Community SH", address: "300 E 53RD ST, LOS ANGELES, CA 90011" },
+            { name: "Ann St El", address: "126 E BLOOM ST, LOS ANGELES, CA 90012" },
+            { name: "Annalee Ave El", address: "19410 S ANNALEE AVE, CARSON, CA 90746" },
+            { name: "Annandale El", address: "6125 POPPY PEAK DR, LOS ANGELES, CA 90042" },
+            { name: "Anton El", address: "831 N BONNIE BEACH PL, LOS ANGELES, CA 90063" },
+            { name: "Apperson St El", address: "10233 WOODWARD AVE, SUNLAND, CA 91040" },
+            { name: "Aragon Ave El", address: "1118 ARAGON AVE, LOS ANGELES, CA 90065" },
+            { name: "Arleta SH", address: "14200 VAN NUYS BLVD, ARLETA, CA 91331" },
+            { name: "Arlington Hts El", address: "1717 7TH AVE, LOS ANGELES, CA 90019" },
+            { name: "Arminta St El", address: "11530 STRATHERN ST, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Armstrong MS", address: "5041 SUNNYSLOPE AVE, SHERMAN OAKS, CA 91423" },
+            { name: "Arroyo Seco Mus/S Mag", address: "4805 SYCAMORE TERR, LOS ANGELES, CA 90042" },
+            { name: "Ascot Ave El", address: "1447 E 45TH ST, LOS ANGELES, CA 90011" },
+            { name: "Atwater Ave El", address: "3271 SILVER LAKE BLVD, LOS ANGELES, CA 90039" },
+            { name: "Audubon MS", address: "4120 11TH AVE, LOS ANGELES, CA 90008" },
+            { name: "Aurora El", address: "1050 E 52ND PL, LOS ANGELES, CA 90011" },
+            { name: "Avalon Gardens El", address: "13940 S SAN PEDRO ST, LOS ANGELES, CA 90061" },
+            { name: "Baca Arts Acad", address: "1536 E 89TH ST, LOS ANGELES, CA 90002" },
+            { name: "Bakewell PC", address: "8621 S BARING CROSS ST, LOS ANGELES, CA 90044" },
+            { name: "BALA", address: "1511 W 110TH ST, LOS ANGELES, CA 90047" },
+            { name: "Balboa El G/HG/HA Mag", address: "17020 LABRADOR ST, NORTHRIDGE, CA 91325" },
+            { name: "Baldwin Hills El", address: "5421 RODEO RD, LOS ANGELES, CA 90016" },
+            { name: "Bancroft MS", address: "929 N LAS PALMAS AVE, LOS ANGELES, CA 90038" },
+            { name: "Bandini St El", address: "425 N BANDINI ST, SAN PEDRO, CA 90731" },
+            { name: "Banneker CTC", address: "14024 S SAN PEDRO ST, LOS ANGELES, CA 90061" },
+            { name: "Banning SH", address: "1527 LAKME AVE, WILMINGTON, CA 90744" },
+            { name: "Barrett El", address: "419 W 98TH ST, LOS ANGELES, CA 90003" },
+            { name: "Barton Hill El", address: "423 N PACIFIC AVE, SAN PEDRO, CA 90731" },
+            { name: "Bassett St El", address: "15756 BASSETT ST, LAKE BALBOA, CA 91406" },
+            { name: "Beachy Ave El", address: "9757 BEACHY AVE, ARLETA, CA 91331" },
+            { name: "Beckford CES", address: "19130 TULSA ST, NORTHRIDGE, CA 91326" },
+            { name: "Beethoven St El", address: "3711 BEETHOVEN ST, LOS ANGELES, CA 90066" },
+            { name: "Bell SH", address: "4328 BELL AVE, BELL, CA 90201" },
+            { name: "Bellingham El", address: "6728 BELLINGHAM AVE, NORTH HOLLYWOOD, CA 91606" },
+            { name: "Belmont SH", address: "1575 W 2ND ST, LOS ANGELES, CA 90026" },
+            { name: "Belvedere El", address: "3724 E FIRST ST, LOS ANGELES, CA 90063" },
+            { name: "Belvedere MS", address: "312 N RECORD AVE, LOS ANGELES, CA 90063" },
+            { name: "Berendo MS", address: "1157 S BERENDO ST, LOS ANGELES, CA 90006" },
+            { name: "Bernstein SH", address: "1309 N WILTON PL, HOLLYWOOD, CA 90028" },
+            { name: "Bertrand Ave El", address: "7021 BERTRAND AVE, RESEDA, CA 91335" },
+            { name: "Bethune MS", address: "155 W 69TH ST, LOS ANGELES, CA 90003" },
+            { name: "Blythe St El", address: "18730 BLYTHE ST, RESEDA, CA 91335" },
+            { name: "Bonita St El", address: "21929 BONITA ST, CARSON, CA 90745" },
+            { name: "Boyle Hts HS", address: "544 S MATHEWS ST, LOS ANGELES, CA 90033" },
+            { name: "Boyle Hts Solis SH", address: "319 N HUMPHREYS AVE, LOS ANGELES, CA 90022" },
+            { name: "Braddock Dr El", address: "4711 INGLEWOOD BLVD, CULVER CITY, CA 90230" },
+            { name: "Bradley Glbl Awr Mag", address: "3875 DUBLIN AVE, LOS ANGELES, CA 90008" },
+            { name: "Brainard El", address: "11407 BRAINARD AVE, LAKEVIEW TERRACE, CA 91342" },
+            { name: "Bravo SH Medical Mag", address: "1200 N CORNWELL ST, LOS ANGELES, CA 90033" },
+            { name: "Breed St El", address: "2226 E THIRD ST, LOS ANGELES, CA 90033" },
+            { name: "Brentwood El Sci Mag", address: "740 GRETNA GREEN WAY, LOS ANGELES, CA 90049" },
+            { name: "Bridge St El", address: "605 N BOYLE AVE, LOS ANGELES, CA 90033" },
+            { name: "Bridges School", address: "1235 BROAD AVE, WILMINGTON, CA 90744" },
+            { name: "Bright El", address: "1771 W 36TH ST, LOS ANGELES, CA 90018" },
+            { name: "Broad Ave El", address: "24815 BROAD AVE, WILMINGTON, CA 90744" },
+            { name: "Broadacres Av El", address: "19424 S BROADACRES AVE, CARSON, CA 90746" },
+            { name: "Broadous El", address: "12561 FILMORE ST, PACOIMA, CA 91331" },
+            { name: "Broadway El", address: "1015 LINCOLN BLVD, VENICE, CA 90291" },
+            { name: "Brockton Ave El", address: "1309 ARMACOST AVE, LOS ANGELES, CA 90025" },
+            { name: "Brooklyn School", address: "4620 CESAR CHAVEZ AVE, LOS ANGELES, CA 90022" },
+            { name: "Bryson Ave El", address: "4470 MISSOURI AVE, SOUTH GATE, CA 90280" },
+            { name: "Buchanan St El", address: "5024 BUCHANAN ST, LOS ANGELES, CA 90042" },
+            { name: "Budlong Ave El", address: "5940 S BUDLONG AVE, LOS ANGELES, CA 90044" },
+            { name: "Burbank Blvd El", address: "12215 ALBERS ST, NORTH HOLLYWOOD, CA 91607" },
+            { name: "Burbank MS A/T/C Mag", address: "6460 N FIGUEROA ST, LOS ANGELES, CA 90042" },
+            { name: "Burke HS", address: "14630 LANARK ST, PANORAMA CITY, CA 91402" },
+            { name: "Burroughs MS", address: "600 S MC CADDEN PL, LOS ANGELES, CA 90005" },
+            { name: "Burton St El", address: "8111 CALHOUN AVE, PANORAMA CITY, CA 91402" },
+            { name: "Bushnell Way El", address: "5507 BUSHNELL WAY, LOS ANGELES, CA 90042" },
+            { name: "Byrd MS", address: "8501 ARLETA AVE, SUN VALLEY, CA 91352" },
+            { name: "Cabrillo Ave El", address: "732 S CABRILLO AVE, SAN PEDRO, CA 90731" },
+            { name: "Cahuenga El", address: "220 S HOBART BLVD, LOS ANGELES, CA 90004" },
+            { name: "Calabash CA", address: "23055 EUGENE ST, WOODLAND HILLS, CA 91364" },
+            { name: "Calahan St El", address: "18722 KNAPP ST, NORTHRIDGE, CA 91324" },
+            { name: "Calvert CES", address: "19850 DELANO ST, WOODLAND HILLS, CA 91367" },
+            { name: "Camellia Ave El", address: "7451 CAMELLIA AVE, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Canfield Ave El", address: "9233 AIRDROME ST, LOS ANGELES, CA 90035" },
+            { name: "Canoga Park El", address: "7438 TOPANGA CANYON BLVD, CANOGA PARK, CA 91303" },
+            { name: "Canoga Pk MS", address: "22250 ELKWOOD ST, CANOGA PARK, CA 91304" },
+            { name: "Canoga Prk SH", address: "6850 TOPANGA CYN BLVD, CANOGA PARK, CA 91303" },
+            { name: "Cantara St El", address: "17950 CANTARA ST, RESEDA, CA 91335" },
+            { name: "Canterbury Ave El", address: "13670 MONTAGUE ST, ARLETA, CA 91331" },
+            { name: "Canyon CEl", address: "421 ENTRADA DR, SANTA MONICA, CA 90402" },
+            { name: "Capistrano Ave El", address: "8118 CAPISTRANO AVE, WEST HILLS, CA 91304" },
+            { name: "Cardenas El", address: "6900 CALHOUN AVE, VAN NUYS, CA 91405" },
+            { name: "Carlson Hospital", address: "10952 WHIPPLE ST, NORTH HOLLYWOOD, CA 91602" },
+            { name: "Carnegie MS", address: "21820 BONITA ST, CARSON, CA 90745" },
+            { name: "Caroldale LC", address: "22424 CAROLDALE AVE, CARSON, CA 90745" },
+            { name: "Carpenter Comm Chtr", address: "3909 CARPENTER AVE, STUDIO CITY, CA 91604" },
+            { name: "Carson Acad Ed & Emp", address: "22328 S MAIN ST, CARSON, CA 90745" },
+            { name: "Carson Acad Med Arts", address: "22328 S MAIN ST, CARSON, CA 90745" },
+            { name: "Carson SH", address: "22328 S MAIN ST, CARSON, CA 90745" },
+            { name: "Carson St El", address: "161 E CARSON ST, CARSON, CA 90745" },
+            { name: "Carson-Gore Academy", address: "3200 W WASHINGTON BLVD, LOS ANGELES, CA 90018" },
+            { name: "Carthay El ES Mag", address: "6351 W OLYMPIC BLVD, LOS ANGELES, CA 90048" },
+            { name: "Carver MS", address: "4410 MC KINLEY AVE, LOS ANGELES, CA 90011" },
+            { name: "Castelar St El", address: "840 YALE ST, LOS ANGELES, CA 90012" },
+            { name: "Castle Hts El", address: "9755 CATTARAUGUS AVE, LOS ANGELES, CA 90034" },
+            { name: "Castlebay Ln Chtr", address: "19010 CASTLEBAY LN, PORTER RANCH, CA 91326" },
+            { name: "Castro MS", address: "1575 W 2ND ST, LOS ANGELES, CA 90026" },
+            { name: "Catskill Ave El", address: "23536 CATSKILL AVE, CARSON, CA 90745" },
+            { name: "CDS Aggeler", address: "21050 PLUMMER ST, CHATSWORTH, CA 91311" },
+            { name: "CDS Alonzo", address: "5755 FOUNTAIN AVE, LOS ANGELES, CA 90028" },
+            { name: "CDS Johnson", address: "10601 S GRANDEE AVE, LOS ANGELES, CA 90002" },
+            { name: "CDS Johnston", address: "2210 TAPER AVE, SAN PEDRO, CA 90731" },
+            { name: "CDS London", address: "12924-A OXNARD ST, VALLEY GLEN, CA 91401" },
+            { name: "CDS Tri-C", address: "716 E 14TH ST- 2ND FLOOR, LOS ANGELES, CA 90021" },
+            { name: "Central HS", address: "716 E 14TH ST, LOS ANGELES, CA 90021" },
+            { name: "Century Park El", address: "10935 S SPINNING AVE, INGLEWOOD, CA 90303" },
+            { name: "Chandler El", address: "14030 WEDDINGTON ST, SHERMAN OAKS, CA 91401" },
+            { name: "Chapman El", address: "1947 MARINE AVE, GARDENA, CA 90249" },
+            { name: "Charnock Road El", address: "11133 CHARNOCK RD, LOS ANGELES, CA 90034" },
+            { name: "Chase St El", address: "14041 CHASE ST, PANORAMA CITY, CA 91402" },
+            { name: "Chatsworth CHS", address: "10027 LURLINE AVE, CHATSWORTH, CA 91311" },
+            { name: "Chatsworth UP/CD Mag", address: "22005 DEVONSHIRE ST, CHATSWORTH, CA 91311" },
+            { name: "Chavez El", address: "5243 OAKLAND ST, LOS ANGELES, CA 90032" },
+            { name: "Chavez LA ArTES Mag", address: "1001 ARROYO AVE, SAN FERNANDO, CA 91340" },
+            { name: "Chavez LA ASE", address: "1001 ARROYO AVE, SAN FERNANDO, CA 91340" },
+            { name: "Chavez LA SJ Hum Ac", address: "1001 ARROYO AVE, SAN FERNANDO, CA 91340" },
+            { name: "Chavez LA Tech Prep", address: "1001 ARROYO AVE, SAN FERNANDO, CA 91340" },
+            { name: "Cheremoya Ave El", address: "6017 FRANKLIN AVE, LOS ANGELES, CA 90028" },
+            { name: "Cheviot Hills HS", address: "9200 CATTARAUGUS AVE, LOS ANGELES, CA 90034" },
+            { name: "Cienega El", address: "2611 S ORANGE DR, LOS ANGELES, CA 90016" },
+            { name: "Cimarron Ave El", address: "11559 CIMARRON AVE, HAWTHORNE, CA 90250" },
+            { name: "City of Angels", address: "221 S EASTMAN AVE, LOS ANGELES, CA 90063" },
+            { name: "City Terrace El", address: "4350 CITY TERRACE DR, LOS ANGELES, CA 90063" },
+            { name: "Cleveland CHS", address: "8140 VANALDEN AVE, RESEDA, CA 91335" },
+            { name: "Clifford St M/T Mag", address: "2150 DUANE ST, LOS ANGELES, CA 90039" },
+            { name: "Clinton MS", address: "3500 S HILL ST, LOS ANGELES, CA 90007" },
+            { name: "Clover Ave El", address: "11020 CLOVER AVE, LOS ANGELES, CA 90034" },
+            { name: "Cochran MS", address: "4066 W JOHNNIE COCHRAN VISTA, LOS ANGELES, CA 90019" },
+            { name: "Coeur D Alene Ave El", address: "810 COEUR D ALENE AVE, VENICE, CA 90291" },
+            { name: "Cohasset St El", address: "15810 SATICOY ST, LAKE BALBOA, CA 91406" },
+            { name: "Coldwater Cyn El", address: "6850 COLDWATER CANYON AVE, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Colfax CEl", address: "4935 COLFAX AVE, VALLEY VILLAGE, CA 91601" },
+            { name: "Coliseum St El", address: "4400 COLISEUM ST, LOS ANGELES, CA 90016" },
+            { name: "Columbus Ave El", address: "6700 COLUMBUS AVE, VAN NUYS, CA 91405" },
+            { name: "Commonwlth Ave El", address: "215 S COMMONWEALTH AVE, LOS ANGELES, CA 90004" },
+            { name: "Community El Mag CS", address: "11301 BELLAGIO RD, LOS ANGELES, CA 90049" },
+            { name: "Compton Ave El", address: "1515 E 104TH ST, LOS ANGELES, CA 90002" },
+            { name: "Contreras LC ALC", address: "322 LUCAS AVE, LOS ANGELES, CA 90017" },
+            { name: "Corona Ave El", address: "3825 BELL AVE, BELL, CA 90201" },
+            { name: "Cortines Sch of VAPA", address: "450 N GRAND AVE, LOS ANGELES, CA 90012" },
+            { name: "Coughlin El", address: "11035 BORDEN AVE, PACOIMA, CA 91331" },
+            { name: "Cowan Ave El", address: "7615 COWAN AVE, LOS ANGELES, CA 90045" },
+            { name: "Crenshaw Mag STEMM", address: "5010 11TH AVE, LOS ANGELES, CA 90043" },
+            { name: "Crescent Hts Bl El Mg", address: "1661 S CRESCENT HTS BLVD, LOS ANGELES, CA 90035" },
+            { name: "Crestwood St STEAM Mg", address: "1946 W CRESTWOOD ST, RANCHO PALOS VERDES, CA 90275" },
+            { name: "Curtiss MS", address: "1254 E HELMICK ST, CARSON, CA 90746" },
+            { name: "Dahlia Hts El", address: "5063 FLORISTAN AVE, LOS ANGELES, CA 90041" },
+            { name: "Dana MS", address: "1501 S CABRILLO AVE, SAN PEDRO, CA 90731" },
+            { name: "Danube Ave El", address: "11220 DANUBE AVE, GRANADA HILLS, CA 91344" },
+            { name: "Darby Ave El", address: "10818 DARBY AVE, PORTER RANCH, CA 91326" },
+            { name: "Dayton Heights El", address: "607 N WESTMORELAND AVE, LOS ANGELES, CA 90004" },
+            { name: "DBM", address: "1200 W COLTON ST, LOS ANGELES, CA 90026" },
+            { name: "De la Torre Jr El", address: "500 N ISLAND AVE, WILMINGTON, CA 90744" },
+            { name: "Dearborn El CA", address: "9240 WISH AVE, NORTHRIDGE, CA 91325" },
+            { name: "Del Amo El", address: "21228 WATER ST, CARSON, CA 90745" },
+            { name: "Del Olmo El", address: "100 N NEW HAMPSHIRE AVE, LOS ANGELES, CA 90004" },
+            { name: "Delevan Drive El", address: "4168 W AVENUE 42, LOS ANGELES, CA 90065" },
+            { name: "Dena El", address: "1314 DACOTAH ST, LOS ANGELES, CA 90023" },
+            { name: "Denker Ave El", address: "1620 W 162ND ST, GARDENA, CA 90247" },
+            { name: "Dixie Cyn CC", address: "4220 DIXIE CANYON AVE, SHERMAN OAKS, CA 91423" },
+            { name: "Dodson MS", address: "28014 MONTEREINA DR, RANCHO PALOS VERDES, CA 90275" },
+            { name: "Dolores St El", address: "22526 DOLORES ST, CARSON, CA 90745" },
+            { name: "Dominguez El", address: "21250 SANTA FE AVE, CARSON, CA 90810" },
+            { name: "Dorris Place El", address: "2225 DORRIS PL, LOS ANGELES, CA 90031" },
+            { name: "Dorsey SH", address: "3537 FARMDALE AVE, LOS ANGELES, CA 90016" },
+            { name: "Drew MS", address: "8511 COMPTON AVE, LOS ANGELES, CA 90001" },
+            { name: "Dyer St El", address: "14500 DYER ST, SYLMAR, CA 91342" },
+            { name: "Dymally SH", address: "8800 S SAN PEDRO ST, LOS ANGELES, CA 90003" },
+            { name: "Eagle Rock El", address: "2057 FAIR PARK AVE, LOS ANGELES, CA 90041" },
+            { name: "Eagle Rock HS", address: "1750 YOSEMITE DR, LOS ANGELES, CA 90041" },
+            { name: "Earhart HS", address: "5355 COLFAX AVE, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Early College Acad", address: "400 W WASHINGTON BLVD, LOS ANGELES, CA 90015" },
+            { name: "East Valley SH", address: "5525 VINELAND AVE, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Eastman Ave El", address: "4112 E OLYMPIC BLVD, LOS ANGELES, CA 90023" },
+            { name: "Edison MS", address: "6500 HOOPER AVE, LOS ANGELES, CA 90001" },
+            { name: "Einstein HS", address: "15938 TUPPER ST, NORTH HILLS, CA 91343" },
+            { name: "El Camino Real CHS", address: "5440 VALLEY CIRCLE BLVD, WOODLAND HILLS, CA 91367" },
+            { name: "El Dorado Ave El", address: "12749 EL DORADO AVE, SYLMAR, CA 91342" },
+            { name: "El Oro Way CES", address: "12230 EL ORO WAY, GRANADA HILLS, CA 91344" },
+            { name: "El Sereno El", address: "3838 ROSEMEAD AVE, LOS ANGELES, CA 90032" },
+            { name: "El Sereno MS", address: "2839 N EASTERN AVE, LOS ANGELES, CA 90032" },
+            { name: "Elementary CDS", address: "727 S WILSON ST, LOS ANGELES, CA 90021" },
+            { name: "Elizabeth LC", address: "4811 ELIZABETH ST, CUDAHY, CA 90201" },
+            { name: "Ellington HS", address: "1541 W 110TH ST, LOS ANGELES, CA 90047" },
+            { name: "Elysian Hts Arts Mag", address: "1562 BAXTER ST, LOS ANGELES, CA 90026" },
+            { name: "Emelita St El", address: "17931 HATTERAS ST, ENCINO, CA 91316" },
+            { name: "Emerson CC", address: "1650 SELBY AVE, LOS ANGELES, CA 90024" },
+            { name: "Enadia Way", address: "22944 ENADIA WAY, WEST HILLS, CA 91307" },
+            { name: "Encino CEl", address: "16941 ADDISON ST, ENCINO, CA 91316" },
+            { name: "Erwin El", address: "13400 ERWIN ST, VAN NUYS, CA 91401" },
+            { name: "Escalante El", address: "4443 LIVE OAK ST, CUDAHY, CA 90201" },
+            { name: "Escutia PC", address: "6401 BEAR AVE, BELL, CA 90201" },
+            { name: "Eshelman Ave El", address: "25902 ESHELMAN AVE, LOMITA, CA 90717" },
+            { name: "Esperanza El", address: "680 LITTLE ST, LOS ANGELES, CA 90017" },
+            { name: "Estrella El", address: "120 E 57TH ST, LOS ANGELES, CA 90011" },
+            { name: "Euclid Ave El", address: "806 EUCLID AVE, LOS ANGELES, CA 90023" },
+            { name: "Evergreen Ave El", address: "2730 GANAHL ST, LOS ANGELES, CA 90033" },
+            { name: "Evergreen HS", address: "13101 DRONFIELD AVE, SYLMAR, CA 91342" },
+            { name: "Fair Ave El", address: "6501 FAIR AVE, NORTH HOLLYWOOD, CA 91606" },
+            { name: "Fairburn Ave El", address: "1403 FAIRBURN AVE, LOS ANGELES, CA 90024" },
+            { name: "Fairfax SH", address: "7850 MELROSE AVE, LOS ANGELES, CA 90046" },
+            { name: "Farmdale El", address: "2660 RUTH SWIGGETT DR, LOS ANGELES, CA 90032" },
+            { name: "Fernangeles El", address: "12001 ART ST, SUN VALLEY, CA 91352" },
+            { name: "Figueroa St El", address: "510 W 111TH ST, LOS ANGELES, CA 90044" },
+            { name: "Fishburn Ave El", address: "5701 FISHBURN AVE, MAYWOOD, CA 90270" },
+            { name: "Fleming MS", address: "25425 WALNUT ST, LOMITA, CA 90717" },
+            { name: "Fletcher Dr El", address: "3350 FLETCHER DR, LOS ANGELES, CA 90065" },
+            { name: "Florence Ave El", address: "7211 BELL AVE, LOS ANGELES, CA 90001" },
+            { name: "Flournoy El", address: "1630 E 111TH ST, LOS ANGELES, CA 90059" },
+            { name: "Ford Blvd El", address: "1112 S FORD BLVD, LOS ANGELES, CA 90022" },
+            { name: "Foshay LC", address: "3751 S HARVARD BLVD, LOS ANGELES, CA 90018" },
+            { name: "Franklin Ave El", address: "1910 N COMMONWEALTH AVE, LOS ANGELES, CA 90027" },
+            { name: "Franklin HS", address: "820 N AVENUE 54, LOS ANGELES, CA 90042" },
+            { name: "Fremont SH", address: "7676 S SAN PEDRO ST, LOS ANGELES, CA 90003" },
+            { name: "Fries Ave El", address: "1301 FRIES AVE, WILMINGTON, CA 90744" },
+            { name: "Frost MS", address: "12314 BRADFORD PL, GRANADA HILLS, CA 91344" },
+            { name: "Fullbright Ave El", address: "6940 FULLBRIGHT AVE, WINNETKA, CA 91306" },
+            { name: "Fulton College Prep", address: "7477 KESTER AVE, VAN NUYS, CA 91405" },
+            { name: "Gage MS", address: "2880 E GAGE AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "GAL King Sch for STEM", address: "2328 ST JAMES PL, LOS ANGELES, CA 90007" },
+            { name: "Garcetti LA", address: "612 W 68TH ST, LOS ANGELES, CA 90044" },
+            { name: "Garden Grove El", address: "18141 VALERIO ST, RESEDA, CA 91335" },
+            { name: "Gardena El", address: "647 W GARDENA BLVD, GARDENA, CA 90247" },
+            { name: "Gardena SH", address: "1301 W 182ND ST, GARDENA, CA 90248" },
+            { name: "Gardner St El", address: "7450 HAWTHORN AVE, LOS ANGELES, CA 90046" },
+            { name: "Garfield SH", address: "5101 E 6TH ST, LOS ANGELES, CA 90022" },
+            { name: "Garvanza El T/L Mag", address: "317 N AVENUE 62, LOS ANGELES, CA 90042" },
+            { name: "Garza PC", address: "2750 HOSTETTER ST, LOS ANGELES, CA 90023" },
+            { name: "Gates St El", address: "3333 MANITOU AVE, LOS ANGELES, CA 90031" },
+            { name: "Gault St El", address: "17000 GAULT ST, LAKE BALBOA, CA 91406" },
+            { name: "Germain Acad AA", address: "20730 GERMAIN ST, CHATSWORTH, CA 91311" },
+            { name: "Glassell Pk STEAM Mag", address: "2211 W AVENUE 30, LOS ANGELES, CA 90065" },
+            { name: "Gledhill St El", address: "16030 GLEDHILL ST, NORTH HILLS, CA 91343" },
+            { name: "Glen Alta El", address: "3410 SIERRA ST, LOS ANGELES, CA 90031" },
+            { name: "Glenfeliz Blvd El", address: "3955 GLENFELIZ BLVD, LOS ANGELES, CA 90039" },
+            { name: "Glenwood El", address: "8001 LEDGE AVE, SUN VALLEY, CA 91352" },
+            { name: "Gompers MS", address: "234 E 112TH ST, LOS ANGELES, CA 90001" },
+            { name: "Graham El", address: "8407 S FIR AVE, LOS ANGELES, CA 90001" },
+            { name: "Granada El", address: "17170 TRIBUNE ST, GRANADA HILLS, CA 91344" },
+            { name: "Granada Hills Charter", address: "10535 ZELZAH AVE, GRANADA HILLS, CA 91344" },
+            { name: "Grand Vw Bl El", address: "3951 GRAND VIEW BLVD, LOS ANGELES, CA 90066" },
+            { name: "Grant El", address: "1530 N WILTON PL, LOS ANGELES, CA 90028" },
+            { name: "Grant SH", address: "13000 OXNARD ST, VAN NUYS, CA 91401" },
+            { name: "Grape St El", address: "1940 E 111TH ST, LOS ANGELES, CA 90059" },
+            { name: "Gratts LA for YS", address: "309 LUCAS AVE, LOS ANGELES, CA 90017" },
+            { name: "Grey HS", address: "18230 KITTRIDGE ST, RESEDA, CA 91335" },
+            { name: "Gridley-Montanez El", address: "1907 8TH ST, SAN FERNANDO, CA 91340" },
+            { name: "Griffin Ave El", address: "2025 GRIFFIN AVE, LOS ANGELES, CA 90031" },
+            { name: "Griffith Joyner El", address: "1963 E 103RD ST, LOS ANGELES, CA 90002" },
+            { name: "Griffith MS STEAM Mg", address: "4765 E 4TH ST, LOS ANGELES, CA 90022" },
+            { name: "Gulf Ave El", address: "828 W L ST, WILMINGTON, CA 90744" },
+            { name: "Haddon Ave El", address: "10115 HADDON AVE, PACOIMA, CA 91331" },
+            { name: "Hale CA", address: "23830 CALIFA ST, WOODLAND HILLS, CA 91367" },
+            { name: "Halldale El", address: "21514 HALLDALE AVE, TORRANCE, CA 90501" },
+            { name: "Hamasaki Med/Sci Mag", address: "4865 E FIRST ST, LOS ANGELES, CA 90022" },
+            { name: "Hamilton SH", address: "2955 S ROBERTSON BLVD, LOS ANGELES, CA 90034" },
+            { name: "Hamlin CA", address: "22627 HAMLIN ST, WEST HILLS, CA 91307" },
+            { name: "Hancock Park El", address: "408 S FAIRFAX AVE, LOS ANGELES, CA 90036" },
+            { name: "Harbor City El", address: "1508 W 254TH ST, HARBOR CITY, CA 90710" },
+            { name: "Harding St El", address: "13060 HARDING ST, SYLMAR, CA 91342" },
+            { name: "Harmony El", address: "899 E 42ND PL, LOS ANGELES, CA 90011" },
+            { name: "Harrison St El", address: "3529 CITY TERRACE DR, LOS ANGELES, CA 90063" },
+            { name: "Hart St El", address: "21040 HART ST, CANOGA PARK, CA 91303" },
+            { name: "Harte Prep MS", address: "9301 S HOOVER ST, LOS ANGELES, CA 90044" },
+            { name: "Harvard El", address: "330 N HARVARD BLVD, LOS ANGELES, CA 90004" },
+            { name: "Haskell El STEAM Mag", address: "15850 TULSA ST, GRANADA HILLS, CA 91344" },
+            { name: "Hawaiian Ave El", address: "540 HAWAIIAN AVE, WILMINGTON, CA 90744" },
+            { name: "Hawkins SH", address: "825 W 60TH ST, LOS ANGELES, CA 90044" },
+            { name: "Haynes CES", address: "6624 LOCKHURST DR, WEST HILLS, CA 91307" },
+            { name: "Hazeltine Ave El", address: "7150 HAZELTINE AVE, VAN NUYS, CA 91405" },
+            { name: "Heliotrope Ave El", address: "5911 WOODLAWN AVE, MAYWOOD, CA 90270" },
+            { name: "Henry MS", address: "17340 SAN JOSE ST, GRANADA HILLS, CA 91344" },
+            { name: "Herrick Ave El", address: "13350 HERRICK AVE, SYLMAR, CA 91342" },
+            { name: "Hesby Oaks Lead Chtr", address: "15530 HESBY ST, ENCINO, CA 91436" },
+            { name: "Highland Park HS", address: "928 N AVENUE 53, LOS ANGELES, CA 90042" },
+            { name: "Hillcrest Dr El", address: "4041 HILLCREST DR, LOS ANGELES, CA 90008" },
+            { name: "Hillside El", address: "120 E AVENUE 35, LOS ANGELES, CA 90031" },
+            { name: "Hobart Blvd El", address: "980 S HOBART BLVD, LOS ANGELES, CA 90006" },
+            { name: "Hollenbeck MS", address: "2510 E 6TH ST, LOS ANGELES, CA 90023" },
+            { name: "Hollywood El", address: "1115 TAMARIND AVE, LOS ANGELES, CA 90038" },
+            { name: "Hollywood SH", address: "1521 N HIGHLAND AVE, LOS ANGELES, CA 90028" },
+            { name: "Holmes Ave El", address: "5108 HOLMES AVE, LOS ANGELES, CA 90058" },
+            { name: "Holmes MS", address: "9351 PASO ROBLES AVE, NORTHRIDGE, CA 91325" },
+            { name: "Hooper Ave El", address: "1225 E 52ND ST, LOS ANGELES, CA 90011" },
+            { name: "Hoover St El", address: "2726 FRANCIS AVE, LOS ANGELES, CA 90005" },
+            { name: "Hope St El", address: "7560 STATE ST, HUNTINGTON PK, CA 90255" },
+            { name: "Hubbard St El", address: "13325 HUBBARD ST, SYLMAR, CA 91342" },
+            { name: "Huerta El", address: "260 E 31ST ST, LOS ANGELES, CA 90011" },
+            { name: "Hughes El", address: "4242 CLARA ST, CUDAHY, CA 90201" },
+            { name: "Humphreys Ave El", address: "500 S HUMPHREYS AVE, LOS ANGELES, CA 90022" },
+            { name: "Huntington Dr El", address: "4435 N HUNTINGTON DR, LOS ANGELES, CA 90032" },
+            { name: "Huntngtn Pk El", address: "6055 CORONA AVE, HUNTINGTON PK, CA 90255" },
+            { name: "Huntngtn Pk SH", address: "6020 MILES AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "Independence El", address: "8435 VICTORIA AVE, SOUTH GATE, CA 90280" },
+            { name: "Independence HS", address: "6501 BALBOA BLVD, LAKE BALBOA, CA 91406" },
+            { name: "International St LC", address: "5225 TWEEDY BLVD, SOUTH GATE, CA 90280" },
+            { name: "Iovine Young Ctr Mag", address: "4120 11TH AV, LOS ANGELES, CA 90008" },
+            { name: "Irving MS MME Mag", address: "3010 ESTARA AVE, LOS ANGELES, CA 90065" },
+            { name: "Isaacs Avalon HS", address: "1425 N AVALON BLVD, WILMINGTON, CA 90744" },
+            { name: "Ivanhoe El", address: "2828 HERKIMER ST, LOS ANGELES, CA 90039" },
+            { name: "Jefferson SH", address: "1319 E 41ST ST, LOS ANGELES, CA 90011" },
+            { name: "Johnson STEM Academy", address: "8701 PARKHILL DR, LOS ANGELES, CA 90045" },
+            { name: "Jones El", address: "900 E 33RD ST, LOS ANGELES, CA 90011" },
+            { name: "Jones PC", address: "1017 W 47TH ST, LOS ANGELES, CA 90037" },
+            { name: "Jordan SH", address: "2265 E 103RD ST, LOS ANGELES, CA 90002" },
+            { name: "Justice St Acad Chtr", address: "23350 JUSTICE ST, WEST HILLS, CA 91304" },
+            { name: "Kahlo HS", address: "1924 S LOS ANGELES ST, LOS ANGELES, CA 90011" },
+            { name: "Kennedy El", address: "4010 E RAMBOZ DRIVE, LOS ANGELES, CA 90063" },
+            { name: "Kennedy SH", address: "11254 GOTHIC AVE, GRANADA HILLS, CA 91344" },
+            { name: "Kenter Canyon EC", address: "645 N KENTER AVE, LOS ANGELES, CA 90049" },
+            { name: "Kentwood El", address: "8401 EMERSON AVE, LOS ANGELES, CA 90045" },
+            { name: "Kester Ave El", address: "5353 KESTER AVE, VAN NUYS, CA 91411" },
+            { name: "Kim Academy", address: "615 S SHATTO PL, LOS ANGELES, CA 90005" },
+            { name: "Kim El", address: "225 S OXFORD AVE, LOS ANGELES, CA 90004" },
+            { name: "King Jr El", address: "3989 S HOBART BLVD, LOS ANGELES, CA 90062" },
+            { name: "King MS Mag Flm/Mdia", address: "4201 FOUNTAIN AVE, LOS ANGELES, CA 90029" },
+            { name: "King-Drew SH Md/S Mg", address: "1601 E 120TH ST, LOS ANGELES, CA 90059" },
+            { name: "Kingsley El", address: "5200 W VIRGINIA AVE, LOS ANGELES, CA 90029" },
+            { name: "Kittridge St El", address: "13619 KITTRIDGE ST, VAN NUYS, CA 91401" },
+            { name: "Knollwood Prep Acad", address: "11822 GERALD AVE, GRANADA HILLS, CA 91344" },
+            { name: "Knox El", address: "8919 S MAIN ST, LOS ANGELES, CA 90003" },
+            { name: "Korenstein El", address: "7650 BEN AVE, NORTH HOLLYWOOD, CA 91606" },
+            { name: "LACES Mag", address: "5931 W 18TH ST, LOS ANGELES, CA 90035" },
+            { name: "Lafayette Park PC", address: "310 S LA FAYETTE PARK PL, LOS ANGELES, CA 90057" },
+            { name: "Lake Balboa CP K-12", address: "6701 BALBOA BLVD, LAKE BALBOA, CA 91406" },
+            { name: "Lake St Primary", address: "135 N LAKE ST, LOS ANGELES, CA 90026" },
+            { name: "Lanai Rd El", address: "4241 LANAI RD, ENCINO, CA 91436" },
+            { name: "Lane El", address: "1500 AVENIDA CESAR CHAVEZ, MONTEREY PARK, CA 91754" },
+            { name: "Langdon Ave El", address: "8817 LANGDON AVE, NORTH HILLS, CA 91343" },
+            { name: "Lankershim El", address: "5250 BAKMAN AVE, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Lassen El", address: "15017 SUPERIOR ST, NORTH HILLS, CA 91343" },
+            { name: "Latona Ave El", address: "4312 BERENICE AVE, LOS ANGELES, CA 90031" },
+            { name: "Laurel CACT Mag", address: "925 N HAYWORTH AVE, LOS ANGELES, CA 90046" },
+            { name: "Lawrence MS", address: "10100 VARIEL AVE, CHATSWORTH, CA 91311" },
+            { name: "Lee El Med Hlth Mag", address: "3600 COUNCIL ST, LOS ANGELES, CA 90004" },
+            { name: "Legacy SH STEAM", address: "5225 TWEEDY BLVD, SOUTH GATE, CA 90280" },
+            { name: "Leichman CPTC", address: "19034 GAULT ST, RESEDA, CA 91335" },
+            { name: "Leland St El", address: "2120 S LELAND ST, SAN PEDRO, CA 90731" },
+            { name: "Lemay St El", address: "17520 VANOWEN ST, LAKE BALBOA, CA 91406" },
+            { name: "Lewis HS", address: "12508 WICKS ST, SUN VALLEY, CA 91352" },
+            { name: "Lexington Ave PC", address: "4564 W LEXINGTON AVE, LOS ANGELES, CA 90029" },
+            { name: "Liberty Blvd El", address: "2728 LIBERTY BLVD, SOUTH GATE, CA 90280" },
+            { name: "Liechty MS", address: "650 S UNION AVE, LOS ANGELES, CA 90017" },
+            { name: "Liggett St El", address: "9373 MOONBEAM AVE, PANORAMA CITY, CA 91402" },
+            { name: "Lillian St El", address: "5909 LILLIAN ST, LOS ANGELES, CA 90001" },
+            { name: "Limerick Ave El", address: "8530 LIMERICK AVE, WINNETKA, CA 91306" },
+            { name: "Lincoln SH", address: "3501 N BROADWAY, LOS ANGELES, CA 90031" },
+            { name: "Lizarraga El", address: "401 E 40TH PL, LOS ANGELES, CA 90011" },
+            { name: "Locke Early Education Center", address: "320 E 111th St, Los Angeles, CA 90061" },
+            { name: "Lockhurst Dr CEl", address: "6170 LOCKHURST DR, WOODLAND HILLS, CA 91367" },
+            { name: "Lockwood Ave El", address: "4345 LOCKWOOD AVE, LOS ANGELES, CA 90029" },
+            { name: "Logan Academy", address: "1711 W MONTANA ST, LOS ANGELES, CA 90026" },
+            { name: "Lokrantz Sp Ed Ctr", address: "19451 WYANDOTTE ST, RESEDA, CA 91335" },
+            { name: "Loma Vista El", address: "3629 E 58TH ST, MAYWOOD, CA 90270" },
+            { name: "Lomita El M/S/T Mag", address: "2211 247TH ST, LOMITA, CA 90717" },
+            { name: "London HS", address: "12924 OXNARD ST, VAN NUYS, CA 91401" },
+            { name: "Lorena St El", address: "1015 S LORENA ST, LOS ANGELES, CA 90023" },
+            { name: "Loreto St El", address: "3408 ARROYO SECO AVE, LOS ANGELES, CA 90065" },
+            { name: "Lorne St El", address: "17440 LORNE ST, NORTHRIDGE, CA 91325" },
+            { name: "Los Angeles Acad MS", address: "644 E 56TH ST, LOS ANGELES, CA 90011" },
+            { name: "Los Angeles El", address: "1211 S HOBART BLVD, LOS ANGELES, CA 90006" },
+            { name: "Los Angeles SH", address: "4650 W OLYMPIC BLVD, LOS ANGELES, CA 90019" },
+            { name: "Los Feliz STEMM Mag", address: "1740 N NEW HAMPSHIRE AVE, LOS ANGELES, CA 90027" },
+            { name: "Lowman Sp Ed & CTC", address: "12827 SATICOY ST, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Loyola Villg El F/PAM", address: "8821 VILLANOVA AVE, LOS ANGELES, CA 90045" },
+            { name: "MacArthur Pk El VAPA", address: "2300 W 7TH ST, LOS ANGELES, CA 90057" },
+            { name: "MaCES Mag", address: "5800 KING AVE, MAYWOOD, CA 90270" },
+            { name: "Mack El", address: "3020 S CATALINA ST, LOS ANGELES, CA 90007" },
+            { name: "Maclay MS", address: "12540 PIERCE AVE, PACOIMA, CA 91331" },
+            { name: "Madison El", address: "9820 MADISON AVE, SOUTH GATE, CA 90280" },
+            { name: "Madison MS", address: "13000 HART ST, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Magnolia Ave El", address: "1626 S ORCHARD AVE, LOS ANGELES, CA 90006" },
+            { name: "Main St El", address: "129 E 53RD ST, LOS ANGELES, CA 90011" },
+            { name: "Malabar St El", address: "3200 MALABAR ST, LOS ANGELES, CA 90063" },
+            { name: "Manchester Ave El", address: "661 W 87TH ST, LOS ANGELES, CA 90044" },
+            { name: "Manhattan Place El", address: "1850 W 96TH ST, LOS ANGELES, CA 90047" },
+            { name: "Mann UCLA Comm Sch", address: "7001 S ST ANDREWS PL, LOS ANGELES, CA 90047" },
+            { name: "Manual Arts SH", address: "4131 S VERMONT AVE, LOS ANGELES, CA 90037" },
+            { name: "Maple PC", address: "3601 S MAPLE AVE, LOS ANGELES, CA 90011" },
+            { name: "Mar Vista El", address: "3330 GRANVILLE AVE, LOS ANGELES, CA 90066" },
+            { name: "Marianna Ave El", address: "4215 E GLEASON ST, LOS ANGELES, CA 90063" },
+            { name: "Marina Del Rey MS", address: "12500 BRADDOCK DR, LOS ANGELES, CA 90066" },
+            { name: "Mariposa-Nabi PC", address: "987 S MARIPOSA AVE, LOS ANGELES, CA 90006" },
+            { name: "Mark Twain MS", address: "2224 WALGROVE AVE, LOS ANGELES, CA 90066" },
+            { name: "Markham MS", address: "1650 E 104TH ST, LOS ANGELES, CA 90002" },
+            { name: "Marlton School", address: "4000 SANTO TOMAS DR, LOS ANGELES, CA 90008" },
+            { name: "Marquez Charter", address: "16821 MARQUEZ AVE, PACIFIC PALISADES, CA 90272" },
+            { name: "Marquez SH HPIAM", address: "6361 COTTAGE ST, HUNTINGTON PARK, CA 90255" },
+            { name: "Marshall SH", address: "3939 TRACY ST, LOS ANGELES, CA 90027" },
+            { name: "Marvin El", address: "2411 MARVIN AVE, LOS ANGELES, CA 90016" },
+            { name: "Mayall St Ac A/T Mag", address: "16701 MAYALL ST, NORTH HILLS, CA 91343" },
+            { name: "Mayberry St El", address: "2414 MAYBERRY ST, LOS ANGELES, CA 90026" },
+            { name: "Maywood Academy SH", address: "6125 PINE AVE, MAYWOOD, CA 90270" },
+            { name: "Maywood El", address: "5200 CUDAHY AVE, MAYWOOD, CA 90270" },
+            { name: "McAlister HS CYESIS", address: "1321 CORTEZ ST, LOS ANGELES, CA 90026" },
+            { name: "McBride Sp Ed Ctr", address: "3960 CENTINELA AVE, LOS ANGELES, CA 90066" },
+            { name: "McKinley Ave El", address: "7812 MC KINLEY AVE, LOS ANGELES, CA 90001" },
+            { name: "Melrose Ave El M/S Mg", address: "731 N DETROIT ST, LOS ANGELES, CA 90046" },
+            { name: "Melvin Ave El", address: "7700 MELVIN AVE, RESEDA, CA 91335" },
+            { name: "Mendez SH", address: "1200 PLAZA DEL SOL, LOS ANGELES, CA 90033" },
+            { name: "Menlo Ave El", address: "4156 MENLO AVE, LOS ANGELES, CA 90037" },
+            { name: "Metropolitan HS", address: "727 S WILSON ST, LOS ANGELES, CA 90021" },
+            { name: "Meyler St El", address: "1123 W 223RD ST, TORRANCE, CA 90502" },
+            { name: "Micheltorena St El", address: "1511 MICHELTORENA ST, LOS ANGELES, CA 90026" },
+            { name: "Mid-city PSES Mag", address: "3150 W ADAMS BLVD, LOS ANGELES, CA 90018" },
+            { name: "Middle College HS", address: "1600 IMPERIAL HWY BLDG 16, LOS ANGELES, CA 90047" },
+            { name: "Middleton St El", address: "6537 MALABAR ST, HUNTINGTON PARK, CA 90255" },
+            { name: "Middleton St PC", address: "2410 ZOE AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "Miles Ave El", address: "6720 MILES AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "Miller CTC", address: "8218 VANALDEN AVE, RESEDA, CA 91335" },
+            { name: "Miller El", address: "830 W 77TH ST, LOS ANGELES, CA 90044" },
+            { name: "Miramonte El", address: "1400 E 68TH ST, LOS ANGELES, CA 90001" },
+            { name: "Mission HS", address: "11015 O'MELVENY AVE, SAN FERNANDO, CA 91340" },
+            { name: "Moneta HS", address: "17951 S BUDLONG AVE, GARDENA, CA 90248" },
+            { name: "Monlux El", address: "6051 BELLAIRE AVE, NORTH HOLLYWOOD, CA 91606" },
+            { name: "Monroe SH", address: "9229 HASKELL AVE, NORTH HILLS, CA 91343" },
+            { name: "Montara Ave El", address: "10018 MONTARA AVE, SOUTH GATE, CA 90280" },
+            { name: "Monte Vista St El", address: "5423 MONTE VISTA ST, LOS ANGELES, CA 90042" },
+            { name: "Monterey HS", address: "466 S FRASER AVE, LOS ANGELES, CA 90022" },
+            { name: "Moore M/S/T Acad", address: "1321 E 61ST ST, LOS ANGELES, CA 90001" },
+            { name: "Morningside El", address: "576 N MACLAY AVE, SAN FERNANDO, CA 91340" },
+            { name: "Mosk El", address: "7335 LUBAO AVE, WINNETKA, CA 91306" },
+            { name: "Mount Gleason MS", address: "10965 MT GLEASON AVE, SUNLAND, CA 91040" },
+            { name: "Mountain View El", address: "6410 OLCOTT ST, TUJUNGA, CA 91042" },
+            { name: "Mt Lukens HS", address: "7705 SUMMITROSE ST, TUJUNGA, CA 91042" },
+            { name: "Mt Washington El", address: "3981 SAN RAFAEL AVE, LOS ANGELES, CA 90065" },
+            { name: "Muir MS", address: "5929 S VERMONT AVE, LOS ANGELES, CA 90044" },
+            { name: "Mulholland MS", address: "17120 VANOWEN ST, LAKE BALBOA, CA 91406" },
+            { name: "Multnomah St El", address: "2101 N INDIANA AVE, LOS ANGELES, CA 90032" },
+            { name: "Murchison St El", address: "1501 MURCHISON ST, LOS ANGELES, CA 90033" },
+            { name: "Napa St El", address: "19010 NAPA ST, NORTHRIDGE, CA 91324" },
+            { name: "Narbonne SH", address: "24300 S WESTERN AVE, HARBOR CITY, CA 90710" },
+            { name: "Narbonne SH HARTS LA", address: "24300 WESTERN AVE, HARBOR CITY, CA 90710" },
+            { name: "Nava College Prep", address: "1319 E 41ST ST, LOS ANGELES, CA 90011" },
+            { name: "Nava Learning Academy", address: "1420 E ADAMS BLVD, LOS ANGELES, CA 90011" },
+            { name: "Nestle Ave Charter", address: "5060 NESTLE AVE, TARZANA, CA 91356" },
+            { name: "Nevada Ave El", address: "22120 CHASE ST, WEST HILLS, CA 91304" },
+            { name: "Nevin Ave El", address: "1569 E 32ND ST, LOS ANGELES, CA 90011" },
+            { name: "Newmark HS", address: "1575 W 2ND ST, LOS ANGELES, CA 90026" },
+            { name: "Nightingale MS", address: "3311 N FIGUEROA ST, LOS ANGELES, CA 90065" },
+            { name: "Nimitz MS", address: "6021 CARMELITA AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "No Hollywd SH", address: "5231 COLFAX AVE, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Nobel CMS", address: "9950 TAMPA AVE, NORTHRIDGE, CA 91324" },
+            { name: "Noble Ave El", address: "8329 NOBLE AVE, NORTH HILLS, CA 91343" },
+            { name: "Normandie Ave El", address: "4505 S RAYMOND AVE, LOS ANGELES, CA 90037" },
+            { name: "Normont El", address: "1001 W 253RD ST, HARBOR CITY, CA 90710" },
+            { name: "Northridge Acad SH", address: "9601 ZELZAH AVE, NORTHRIDGE, CA 91325" },
+            { name: "Northridge MS", address: "17960 CHASE ST, NORTHRIDGE, CA 91325" },
+            { name: "Norwood St El", address: "2020 OAK ST, LOS ANGELES, CA 90007" },
+            { name: "Nueva Vista El", address: "4412 RANDOLPH ST, BELL, CA 90201" },
+            { name: "O'Melveny El", address: "728 WOODWORTH ST, SAN FERNANDO, CA 91340" },
+            { name: "Obama El", address: "8150 CEDROS AVE, PANORAMA CITY, CA 91402" },
+            { name: "Obama Glbl Prep Acad", address: "1700 W 46TH ST, LOS ANGELES, CA 90062" },
+            { name: "Ochoa LC", address: "5027 LIVE OAK ST, CUDAHY, CA 90201" },
+            { name: "Odyssey HS", address: "8693 DEARBORN AVE, SOUTH GATE, CA 90280" },
+            { name: "Olive Vista MS", address: "14600 TYLER ST, SYLMAR, CA 91342" },
+            { name: "Olympic PC", address: "950 S ALBANY ST, LOS ANGELES, CA 90015" },
+            { name: "Open Charter Mag", address: "5540 W 77TH ST, LOS ANGELES, CA 90045" },
+            { name: "Orchard Academies 2B", address: "6411 ORCHARD AVE, BELL, CA 90201" },
+            { name: "Orchard Academies 2C", address: "6411 ORCHARD AVE, BELL, CA 90201" },
+            { name: "Orthopaedic Hsp SH Mg", address: "300 W 23RD ST, LOS ANGELES, CA 90007" },
+            { name: "Osceola St El", address: "14940 OSCEOLA ST, SYLMAR, CA 91342" },
+            { name: "Overland Ave El", address: "10650 ASHBY AVE, LOS ANGELES, CA 90064" },
+            { name: "Owensmouth HS", address: "6921 JORDAN AVE, CANOGA PARK, CA 91303" },
+            { name: "Oxnard St El", address: "10912 OXNARD ST, NORTH HOLLYWOOD, CA 91606" },
+            { name: "Pacific Blvd School", address: "2660 E 57TH ST, HUNTINGTON PK, CA 90255" },
+            { name: "Pacoima MS", address: "9919 LAUREL CANYON BLVD, PACOIMA, CA 91331" },
+            { name: "Palisades CEl", address: "800 VIA DE LA PAZ, PACIFIC PALISADES, CA 90272" },
+            { name: "Palisades CHS", address: "15777 BOWDOIN ST, PACIFIC PALISADES, CA 90272" },
+            { name: "Palms El", address: "3520 MOTOR AVE, LOS ANGELES, CA 90034" },
+            { name: "Palms MS", address: "10860 WOODBINE ST, LOS ANGELES, CA 90034" },
+            { name: "Panorama City El", address: "8600 KESTER AVE, PANORAMA CITY, CA 91402" },
+            { name: "Panorama SH", address: "8015 VAN NUYS BL, PANORAMA CITY, CA 91402" },
+            { name: "Park Ave El", address: "8020 PARK AVE, CUDAHY, CA 90201" },
+            { name: "Park Wstn Pl El", address: "1214 PARK WESTERN PL, SAN PEDRO, CA 90732" },
+            { name: "Parks LC", address: "8855 NOBLE AVE, NORTH HILLS, CA 91343" },
+            { name: "Parmelee Ave El", address: "1338 E 76TH PL, LOS ANGELES, CA 90001" },
+            { name: "Parthenia Ac Art Tec", address: "16825 NAPA ST, NORTH HILLS, CA 91343" },
+            { name: "Paseo del Rey El", address: "7751 PASEO DEL REY, PLAYA DEL REY, CA 90293" },
+            { name: "Patton HS", address: "24514 S WESTERN AVE, HARBOR CITY, CA 90710" },
+            { name: "Pearl SH Jrnls/Cmm Mg", address: "6649 BALBOA BLVD, LAKE BALBOA, CA 91406" },
+            { name: "Peary MS", address: "1415 W GARDENA BLVD, GARDENA, CA 90247" },
+            { name: "Phoenix HS", address: "12971 ZANJA ST, LOS ANGELES, CA 90066" },
+            { name: "Pinewood Ave El", address: "10111 SILVERTON AVE, TUJUNGA, CA 91042" },
+            { name: "Pio Pico MS", address: "1512 S ARLINGTON AVE, LOS ANGELES, CA 90019" },
+            { name: "Plainview Academc CA", address: "10819 PLAINVIEW AVE, TUJUNGA, CA 91042" },
+            { name: "Plasencia El", address: "1321 CORTEZ ST, LOS ANGELES, CA 90026" },
+            { name: "Playa Del Rey El", address: "12221 JUNIETTE ST, CULVER CITY, CA 90230" },
+            { name: "Playa Vista El", address: "13150 W BLUFF CREEK DR, PLAYA VISTA, CA 90094" },
+            { name: "Plummer El", address: "9340 NOBLE AVE, NORTH HILLS, CA 91343" },
+            { name: "Poindexter LaMotte El", address: "4410 ORCHARD AVE, LOS ANGELES, CA 90037" },
+            { name: "Politi El", address: "2481 W 11TH ST, LOS ANGELES, CA 90006" },
+            { name: "Polytechnic SH", address: "12431 ROSCOE BLVD, SUN VALLEY, CA 91352" },
+            { name: "Pomelo Community CS", address: "7633 MARCH AVE, WEST HILLS, CA 91304" },
+            { name: "Porter MS", address: "15960 KINGSBURY ST, GRANADA HILLS, CA 91344" },
+            { name: "Porter Ranch School", address: "12450 MASON AVE, PORTER RANCH, CA 91326" },
+            { name: "Portola CM", address: "18720 LINNET ST, TARZANA, CA 91356" },
+            { name: "President Ave El", address: "1465 W 243RD ST, HARBOR CITY, CA 90710" },
+            { name: "Primary Academy", address: "9075 WILLIS AVE, PANORAMA CITY, CA 91402" },
+            { name: "Pt Fermin El Mr/S Mg", address: "3333 KERCKHOFF AVE, SAN PEDRO, CA 90731" },
+            { name: "Pueblo de LA HS", address: "3921 SELIG PL, LOS ANGELES, CA 90031" },
+            { name: "Purche Ave El", address: "13210 PURCHE AVE, GARDENA, CA 90249" },
+            { name: "Queen Anne Pl El", address: "1212 QUEEN ANNE PL, LOS ANGELES, CA 90019" },
+            { name: "Ramona El", address: "1133 N MARIPOSA AVE, LOS ANGELES, CA 90029" },
+            { name: "Ramona HS", address: "231 S ALMA AVE, LOS ANGELES, CA 90063" },
+            { name: "Ranchito Ave El", address: "7940 RANCHITO AVE, PANORAMA CITY, CA 91402" },
+            { name: "Rancho Domngz Prep", address: "4110 SANTA FE AVE, LONG BEACH, CA 90810" },
+            { name: "Raymond Ave El", address: "7511 RAYMOND AVE, LOS ANGELES, CA 90044" },
+            { name: "Reed MS", address: "4525 IRVINE AVE, NORTH HOLLYWOOD, CA 91602" },
+            { name: "Reseda CHS", address: "18230 KITTRIDGE ST, RESEDA, CA 91335" },
+            { name: "Reseda El", address: "7265 AMIGO AVE, RESEDA, CA 91335" },
+            { name: "Revere CMS", address: "1450 ALLENFORD AVE, LOS ANGELES, CA 90049" },
+            { name: "RFK Ambsdr Glbl Edu", address: "3201 W 8TH ST, LOS ANGELES, CA 90005" },
+            { name: "RFK Ambsdr Glbl Ldsh", address: "701 S CATALINA ST, LOS ANGELES, CA 90005" },
+            { name: "RFK LA SH Arts", address: "701 S CATALINA ST, LOS ANGELES, CA 90005" },
+            { name: "RFK New Open Wld", address: "3201 W 8TH ST, LOS ANGELES, CA 90010" },
+            { name: "RFK Sch Vis Arts/Hum", address: "701 S CATALINA ST, LOS ANGELES, CA 90005" },
+            { name: "RFK UCLA Comm Sch", address: "700 S MARIPOSA AVE, LOS ANGELES, CA 90005" },
+            { name: "Richland Ave El", address: "11562 RICHLAND AVE, LOS ANGELES, CA 90064" },
+            { name: "Ride El Smart Acad", address: "1041 E 46TH ST, LOS ANGELES, CA 90011" },
+            { name: "Riley HS CYESIS", address: "1524 E 103RD ST, LOS ANGELES, CA 90002" },
+            { name: "Rio Vista El", address: "4243 SATSUMA AVE, NORTH HOLLYWOOD, CA 91602" },
+            { name: "Riordan PC", address: "5531 MONTE VISTA ST, LOS ANGELES, CA 90042" },
+            { name: "Ritter El", address: "11108 WATTS AVE, LOS ANGELES, CA 90059" },
+            { name: "Rivera LC Com & Tech", address: "6100 S CENTRAL AVE, LOS ANGELES, CA 90001" },
+            { name: "Riverside Dr CS", address: "13061 RIVERSIDE DR, SHERMAN OAKS, CA 91423" },
+            { name: "Roberti Early Education Center", address: "1156 E Vernon Ave, Los Angeles, CA 90011" },
+            { name: "Rockdale VAPA Mag", address: "1303 YOSEMITE DR, LOS ANGELES, CA 90041" },
+            { name: "Rodia HS", address: "2701 SEQUOIA DR, SOUTH GATE, CA 90280" },
+            { name: "Rogers HS", address: "14711 GILMORE ST, VAN NUYS, CA 91411" },
+            { name: "Romer MS", address: "6501 LAUREL CANYON BLVD, NORTH HOLLYWOOD, CA 91606" },
+            { name: "Roosevelt SH", address: "2530 E 4TH ST, LOS ANGELES, CA 90033" },
+            { name: "Roscoe El", address: "10765 STRATHERN ST, SUN VALLEY, CA 91352" },
+            { name: "Roscomare Rd El", address: "2425 ROSCOMARE RD, LOS ANGELES, CA 90077" },
+            { name: "Rosemont Ave El", address: "421 N ROSEMONT AVE, LOS ANGELES, CA 90026" },
+            { name: "Rosewood UP/UD Mag", address: "503 N CROFT AVE, LOS ANGELES, CA 90048" },
+            { name: "Rowan Ave El", address: "600 S ROWAN AVE, LOS ANGELES, CA 90023" },
+            { name: "Roybal LC", address: "1200 W COLTON ST, LOS ANGELES, CA 90026" },
+            { name: "Roybal-Allard El", address: "3232 SATURN AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "Russell El", address: "1263 E FIRESTONE BLVD, LOS ANGELES, CA 90001" },
+            { name: "Salvin Sp Ed Ctr", address: "1925 BUDLONG AVE, LOS ANGELES, CA 90007" },
+            { name: "San Antonio El", address: "6222 STATE ST, HUNTINGTON PARK, CA 90255" },
+            { name: "San Antonio HS", address: "2911 BELGRAVE AVE, HUNTINGTON PARK, CA 90255" },
+            { name: "San Fernando El", address: "1130 MOTT ST, SAN FERNANDO, CA 91340" },
+            { name: "San Fernando MS", address: "130 N BRAND BLVD, SAN FERNANDO, CA 91340" },
+            { name: "San Fernando SH", address: "11133 O'MELVENY AVE, SAN FERNANDO, CA 91340" },
+            { name: "San Gabriel Ave El", address: "8628 SAN GABRIEL AVE, SOUTH GATE, CA 90280" },
+            { name: "San Jose St El", address: "14928 CLYMER ST, MISSION HILLS, CA 91345" },
+            { name: "San Miguel El", address: "9801 SAN MIGUEL AVE, SOUTH GATE, CA 90280" },
+            { name: "San Pascual STEAM Mg", address: "815 SAN PASCUAL AVE, LOS ANGELES, CA 90042" },
+            { name: "San Pedro SH", address: "1610 S LELAND ST, SAN PEDRO, CA 90731" },
+            { name: "San Pedro St El", address: "1635 S SAN PEDRO ST, LOS ANGELES, CA 90015" },
+            { name: "Santana Art Ac", address: "9301 COLUMBUS AVE, NORTH HILLS, CA 91343" },
+            { name: "Santee EC", address: "1921 MAPLE AVE, LOS ANGELES, CA 90011" },
+            { name: "Saticoy El", address: "7850 ETHEL AVE, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Saturn St El", address: "5360 SATURN ST, LOS ANGELES, CA 90019" },
+            { name: "Science Ac STEM Mag", address: "5525 VINELAND AVE, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Secondary CDS", address: "727 S WILSON ST, LOS ANGELES, CA 90021" },
+            { name: "Sendak El", address: "11414 W TIARA ST, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Sepulveda MS", address: "15330 PLUMMER ST, NORTH HILLS, CA 91343" },
+            { name: "Serrania Ave CES", address: "5014 SERRANIA AVE, WOODLAND HILLS, CA 91364" },
+            { name: "Sharp Ave El", address: "13800 PIERCE ST, ARLETA, CA 91331" },
+            { name: "Shenandoah St El", address: "2450 SHENANDOAH ST, LOS ANGELES, CA 90034" },
+            { name: "Sheridan St El", address: "416 N CORNWELL ST, LOS ANGELES, CA 90033" },
+            { name: "Sherman Oaks El CS", address: "14755 GREENLEAF ST, SHERMAN OAKS, CA 91403" },
+            { name: "Shirley Ave El", address: "19452 HART ST, RESEDA, CA 91335" },
+            { name: "Short Ave El", address: "12814 MAXELLA AVE, LOS ANGELES, CA 90066" },
+            { name: "Sierra Park El", address: "3170 BUDAU AVE, LOS ANGELES, CA 90032" },
+            { name: "Sierra Vista El", address: "4342 ALPHA ST, LOS ANGELES, CA 90032" },
+            { name: "SOCES Mag", address: "18605 ERWIN ST, RESEDA, CA 91335" },
+            { name: "Solano Ave El", address: "615 SOLANO AVE, LOS ANGELES, CA 90012" },
+            { name: "Soto St El", address: "1020 S SOTO ST, LOS ANGELES, CA 90023" },
+            { name: "Sotomayor Art/Sci Mag", address: "2050 N SAN FERNANDO RD, LOS ANGELES, CA 90065" },
+            { name: "South East SH", address: "2720 TWEEDY BLVD, SOUTH GATE, CA 90280" },
+            { name: "South Gate MS", address: "4100 FIRESTONE BLVD, SOUTH GATE, CA 90280" },
+            { name: "South Gate SH", address: "3351 FIRESTONE BLVD, SOUTH GATE, CA 90280" },
+            { name: "South Park El", address: "8510 TOWNE AVE, LOS ANGELES, CA 90003" },
+            { name: "South Shores El PA Mg", address: "2060 W 35TH ST, SAN PEDRO, CA 90732" },
+            { name: "Southeast MS", address: "2560 TWEEDY BLVD, SOUTH GATE, CA 90280" },
+            { name: "Stagg St El", address: "7839 AMESTOY AVE, LAKE BALBOA, CA 91406" },
+            { name: "Stanford Ave El", address: "2833 ILLINOIS AVE, SOUTH GATE, CA 90280" },
+            { name: "State St El", address: "3211 SANTA ANA ST, SOUTH GATE, CA 90280" },
+            { name: "Sterry El", address: "1730 CORINTH AVE, LOS ANGELES, CA 90025" },
+            { name: "Stevenson CCP", address: "725 S INDIANA ST, LOS ANGELES, CA 90023" },
+            { name: "Stonehurst STEAM Mag", address: "9851 STONEHURST AVE, SUN VALLEY, CA 91352" },
+            { name: "Stoner Ave El", address: "11735 BRADDOCK DR, CULVER CITY, CA 90230" },
+            { name: "Stoney Point HS", address: "10010 DE SOTO AVE, CHATSWORTH, CA 91311" },
+            { name: "Strathern St El", address: "7939 ST CLAIR AVE, NORTH HOLLYWOOD, CA 91605" },
+            { name: "Sun Valley Mag ET", address: "7330 BAKMAN AVE, SUN VALLEY, CA 91352" },
+            { name: "Sunland El", address: "8350 HILLROSE ST, SUNLAND, CA 91040" },
+            { name: "Sunny Brae Ave El", address: "20620 ARMINTA ST, WINNETKA, CA 91306" },
+            { name: "Sunrise El", address: "2821 E 7TH ST, LOS ANGELES, CA 90023" },
+            { name: "Superior St El", address: "9756 OSO AVE, CHATSWORTH, CA 91311" },
+            { name: "Sutter MS", address: "7330 WINNETKA AVE, WINNETKA, CA 91306" },
+            { name: "Sylmar CHS", address: "13050 BORDEN AVE, SYLMAR, CA 91342" },
+            { name: "Sylmar El", address: "13291 PHILLIPPI AVE, SYLMAR, CA 91342" },
+            { name: "Sylmar Ldshp Acad", address: "14550 BLEDSOE ST, SYLMAR, CA 91342" },
+            { name: "Sylvan Park El", address: "6238 NOBLE AVE, VAN NUYS, CA 91411" },
+            { name: "Taft CHS", address: "5461 WINNETKA AVE, WOODLAND HILLS, CA 91364" },
+            { name: "Taper Ave El", address: "1824 TAPER AVE, SAN PEDRO, CA 90731" },
+            { name: "Tarzana El", address: "5726 TOPEKA DR, TARZANA, CA 91356" },
+            { name: "Telfair Ave El", address: "10975 TELFAIR AVE, PACOIMA, CA 91331" },
+            { name: "Thoreau HS", address: "5429 QUAKERTOWN AVE, WOODLAND HILLS, CA 91364" },
+            { name: "Toland Way El", address: "4545 TOLAND WAY, LOS ANGELES, CA 90041" },
+            { name: "Toluca Lake El", address: "4840 CAHUENGA BLVD, NORTH HOLLYWOOD, CA 91601" },
+            { name: "Topanga El CS", address: "22075 TOPANGA SCHOOL RD, TOPANGA, CA 90290" },
+            { name: "Topeka Dr CAS", address: "9815 TOPEKA DR, NORTHRIDGE, CA 91324" },
+            { name: "Torres ELA PA Mag", address: "4211 DOZIER ST, LOS ANGELES, CA 90063" },
+            { name: "Torres Eng & Tech", address: "4211 DOZIER ST, LOS ANGELES, CA 90063" },
+            { name: "Torres HS SJLA Mag", address: "4211 DOZIER ST, LOS ANGELES, CA 90063" },
+            { name: "Torres Hum/Art/Tech", address: "4211 DOZIER ST, LOS ANGELES, CA 90063" },
+            { name: "Torres Renaissance", address: "4211 DOZIER ST, LOS ANGELES, CA 90063" },
+            { name: "Towne Ave El", address: "18924 TOWNE AVE, CARSON, CA 90746" },
+            { name: "Trinity St El", address: "3736 TRINITY ST, LOS ANGELES, CA 90011" },
+            { name: "Tulsa St El", address: "10900 HAYVENHURST AVE, GRANADA HILLS, CA 91344" },
+            { name: "Tweedy El", address: "9724 PINEHURST AVE, SOUTH GATE, CA 90280" },
+            { name: "Union Ave El", address: "150 S BURLINGTON AVE, LOS ANGELES, CA 90057" },
+            { name: "University HS Charter", address: "11800 TEXAS AVE, LOS ANGELES, CA 90025" },
+            { name: "Utah St El", address: "255 GABRIEL GARCIA MARQUEZ ST, LOS ANGELES, CA 90033" },
+            { name: "VA Arts & Entmt", address: "1254 E HELMICK ST, CARSON, CA 90746" },
+            { name: "VA Business & Entrep", address: "18720 LINNET ST, TARZANA, CA 91356" },
+            { name: "VA Computer Science", address: "5010 11TH AVE, LOS ANGELES, CA 90043" },
+            { name: "VA IntStudies Wld Lg", address: "19452 HART ST, RESEDA, CA 91335" },
+            { name: "VA Ldshp & Pub Srvc", address: "474 HARTFORD AVE, LOS ANGELES, CA 90017" },
+            { name: "VA STEAM", address: "4010 E RAMBOZ DR, LOS ANGELES, CA 90063" },
+            { name: "Valerio St El", address: "15035 VALERIO ST, VAN NUYS, CA 91405" },
+            { name: "Valley Acad Arts/Sci", address: "10445 BALBOA BLVD, GRANADA HILLS, CA 91344" },
+            { name: "Valley View El", address: "6921 WOODROW WILSON DR, LOS ANGELES, CA 90068" },
+            { name: "Van Deene Ave El", address: "826 W JAVELIN ST, TORRANCE, CA 90502" },
+            { name: "Van Gogh Chtr", address: "17160 VAN GOGH ST, GRANADA HILLS, CA 91344" },
+            { name: "Van Ness Ave El", address: "501 N VAN NESS AVE, LOS ANGELES, CA 90004" },
+            { name: "Van Nuys El", address: "6464 SYLMAR AVE, VAN NUYS, CA 91401" },
+            { name: "Van Nuys MS", address: "5435 VESPER AVE, SHERMAN OAKS, CA 91411" },
+            { name: "Van Nuys SH", address: "6535 CEDROS AVE, VAN NUYS, CA 91411" },
+            { name: "Vanalden Ave El", address: "19019 DELANO ST, RESEDA, CA 91335" },
+            { name: "Vena Ave El", address: "9377 VENA AVE, ARLETA, CA 91331" },
+            { name: "Venice SH", address: "13000 VENICE BLVD, LOS ANGELES, CA 90066" },
+            { name: "Verdugo Hls SH", address: "10625 PLAINVIEW AVE, TUJUNGA, CA 91042" },
+            { name: "Vermont Ave El", address: "1435 W 27TH ST, LOS ANGELES, CA 90007" },
+            { name: "Vernon City El", address: "2360 E VERNON AVE, LOS ANGELES, CA 90058" },
+            { name: "Victoria Ave El", address: "3320 MISSOURI AVE, SOUTH GATE, CA 90280" },
+            { name: "Victory Blvd El", address: "6315 RADFORD AVE, NORTH HOLLYWOOD, CA 91606" },
+            { name: "View Park Contn HS", address: "4701 RODEO RD, LOS ANGELES, CA 90016" },
+            { name: "Vine St El", address: "955 N VINE ST, LOS ANGELES, CA 90038" },
+            { name: "Vinedale College Prp", address: "10150 LA TUNA CANYON RD, SUN VALLEY, CA 91352" },
+            { name: "Vintage El M/S/T Mag", address: "15848 STARE ST, NORTH HILLS, CA 91343" },
+            { name: "Virgil MS", address: "152 N VERMONT AVE, LOS ANGELES, CA 90004" },
+            { name: "Virginia Rd El", address: "2925 VIRGINIA RD, LOS ANGELES, CA 90016" },
+            { name: "Westside Glbl Awr Mag", address: "104 ANCHORAGE ST, MARINA DEL REY, CA 90292" },
+            { name: "Vista del Valle Acad", address: "12441 BROMONT AVE, SAN FERNANDO, CA 91340" },
+            { name: "Vista MS", address: "15040 ROSCOE BLVD, PANORAMA CITY, CA 91402" },
+            { name: "Vladovic Harbor TPA", address: "1111 FIGUEROA PL, WILMINGTON, CA 90744" },
+            { name: "VOCES Mag", address: "9171 TELFAIR AVE, SUN VALLEY, CA 91352" },
+            { name: "Wadsworth Ave El", address: "981 E 41ST ST, LOS ANGELES, CA 90011" },
+            { name: "Walgrove Ave El", address: "1630 WALGROVE AVE, LOS ANGELES, CA 90066" },
+            { name: "Walnut Park El", address: "2642 OLIVE ST, HUNTINGTON PARK, CA 90255" },
+            { name: "Walnut Park MS SJ/SL", address: "7500 MARBRISA AVE, WALNUT PARK, CA 90255" },
+            { name: "Warner Ave El", address: "615 HOLMBY AVE, LOS ANGELES, CA 90024" },
+            { name: "Washington PC", address: "860 W 112TH ST, LOS ANGELES, CA 90044" },
+            { name: "Washington Prep SH", address: "10860 S DENKER AVE, LOS ANGELES, CA 90047" },
+            { name: "Webster MS", address: "11330 W GRAHAM PL, LOS ANGELES, CA 90064" },
+            { name: "Weemes El", address: "1260 W 36TH PL, LOS ANGELES, CA 90007" },
+            { name: "Weigand Ave El", address: "10401 WEIGAND AVE, LOS ANGELES, CA 90002" },
+            { name: "Welby Way CEl", address: "23456 WELBY WAY, WEST HILLS, CA 91307" },
+            { name: "WESM Hlth/Sports Med", address: "7400 W MANCHESTER AVE, LOS ANGELES, CA 90045" },
+            { name: "West Adams Prep SH", address: "1500 W WASHINGTON BL, LOS ANGELES, CA 90007" },
+            { name: "West Athens El", address: "1110 W 119TH ST, LOS ANGELES, CA 90044" },
+            { name: "West Hollywood El", address: "970 N HAMMOND ST, WEST HOLLYWOOD, CA 90069" },
+            { name: "West Vernon Ave El", address: "4312 S GRAND AVE, LOS ANGELES, CA 90037" },
+            { name: "Western Av TECH Mag", address: "1724 W 53RD ST, LOS ANGELES, CA 90062" },
+            { name: "Westminster MTES Mag", address: "1010 ABBOT KINNEY BLVD, VENICE, CA 90291" },
+            { name: "Westport Hts El", address: "6011 W 79TH ST, LOS ANGELES, CA 90045" },
+            { name: "Westwood CEl", address: "2050 SELBY AVE, LOS ANGELES, CA 90025" },
+            { name: "White El", address: "2401 WILSHIRE BLVD, LOS ANGELES, CA 90057" },
+            { name: "White MS", address: "22102 S FIGUEROA ST, CARSON, CA 90745" },
+            { name: "White Point El", address: "1410 SILVIUS AVE, SAN PEDRO, CA 90731" },
+            { name: "Whitman HS", address: "7795 ROSEWOOD AVE, LOS ANGELES, CA 90036" },
+            { name: "Widney CPTC", address: "2302 S GRAMERCY PL, LOS ANGELES, CA 90018" },
+            { name: "Wilbur CEA", address: "5213 CREBS AVE, TARZANA, CA 91356" },
+            { name: "Willenberg Sp Ed Ctr", address: "308 WEYMOUTH AVE, SAN PEDRO, CA 90732" },
+            { name: "Willow El", address: "2777 WILLOW PL, SOUTH GATE, CA 90280" },
+            { name: "Wilmington Park El", address: "1140 MAHAR AVE, WILMINGTON, CA 90744" },
+            { name: "Wilmington STEAM Mag", address: "1700 GULF AVE, WILMINGTON, CA 90744" },
+            { name: "Wilshire Crest El", address: "5241 W OLYMPIC BLVD, LOS ANGELES, CA 90036" },
+            { name: "Wilshire Park El", address: "4063 INGRAHAM ST, LOS ANGELES, CA 90005" },
+            { name: "Wilson SH", address: "4500 MULTNOMAH ST, LOS ANGELES, CA 90032" },
+            { name: "Wilton Pl El", address: "745 S WILTON PL, LOS ANGELES, CA 90005" },
+            { name: "Windsor Hills El Mag", address: "5215 OVERDALE DR, LOS ANGELES, CA 90043" },
+            { name: "Winnetka Ave El", address: "8240 WINNETKA AVE, WINNETKA, CA 91306" },
+            { name: "Wisdom El", address: "1125 E 74TH ST, LOS ANGELES, CA 90001" },
+            { name: "Wonderland Ave El", address: "8510 WONDERLAND AVE, LOS ANGELES, CA 90046" },
+            { name: "Woodcrest El", address: "1151 W 109TH ST, LOS ANGELES, CA 90044" },
+            { name: "Wooden HS", address: "18741 ELKWOOD ST, RESEDA, CA 91335" },
+            { name: "Woodlake ECC", address: "23231 HATTERAS ST, WOODLAND HILLS, CA 91367" },
+            { name: "Woodland Hills Acad", address: "20800 BURBANK BLVD, WOODLAND HILLS, CA 91367" },
+            { name: "Woodland Hills CES", address: "22201 SAN MIGUEL ST, WOODLAND HILLS, CA 91364" },
+            { name: "Woodlawn Ave El", address: "6314 WOODLAWN AVE, BELL, CA 90201" },
+            { name: "Wright Eng Des Mag", address: "6550 W 80TH ST, LOS ANGELES, CA 90045" },
+            { name: "YES Academy", address: "3140 HYDE PARK BLVD, LOS ANGELES, CA 90043" },
+            { name: "Yorkdale El", address: "5657 MERIDIAN ST, LOS ANGELES, CA 90042" },
+            { name: "Young HS", address: "3051 W 52ND ST, LOS ANGELES, CA 90043" },
+            { name: "Yth Opp Unltd Alt HS", address: "915 W MANCHESTER AVE, LOS ANGELES, CA 90044" }
+        ];
+
+        const App = () => {
+            // State for trips and logs
+            const [trips, setTrips] = useState([]);
+            const [history, setHistory] = useState([]);
+            const [monthlyTotals, setMonthlyTotals] = useState([]);
+
+            // State for locations
+            const [fromLocation, setFromLocation] = useState({ name: '', address: '' });
+            const [toLocation, setToLocation] = useState({ name: '', address: '' });
+            const [homeAddress, setHomeAddress] = useState('123 Main St, Los Angeles, CA 90012');
+            const [workAddress, setWorkAddress] = useState('333 S Beaudry Ave, Los Angeles, CA 90017');
+            const [isEditingHome, setIsEditingHome] = useState(false);
+            const [isEditingWork, setIsEditingWork] = useState(false);
+            
+            // State for user-managed school list from CSV and saved commute mileage
+            const [userLocations, setUserLocations] = useState([]);
+            const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
+            
+            // UI and API states
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState(null);
+            const [isCopied, setIsCopied] = useState(false);
+            const [showAddForm, setShowAddForm] = useState(false);
+            const [newLocName, setNewLocName] = useState('');
+            const [newLocAddress, setNewLocAddress] = useState('');
+            const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+
+            const [filteredLocations, setFilteredLocations] = useState([]);
+            const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+            const searchRef = useRef(null);
+            const outputTableRef = useRef(null);
+
+            // Memoize location objects to prevent unnecessary re-renders
+            const homeLocation = useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
+            const workLocation = useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
+
+            // Load all saved data from localStorage on initial render
+            useEffect(() => {
+                const loadData = () => {
+                    try {
+                        const savedHome = localStorage.getItem('mileageAppHome');
+                        const savedWork = localStorage.getItem('mileageAppWork');
+                        const savedCommute = localStorage.getItem('mileageAppManualCommute');
+                        const savedUserLocs = localStorage.getItem('userMileageLocations');
+                        const savedHistory = localStorage.getItem('mileageAppHistory');
+                        const savedMonthlyTotals = localStorage.getItem('mileageAppMonthlyTotals');
+
+                        if (savedHome) setHomeAddress(JSON.parse(savedHome));
+                        if (savedWork) setWorkAddress(JSON.parse(savedWork));
+                        if (savedCommute) setManualCommuteMiles(JSON.parse(savedCommute));
+                        if (savedUserLocs) setUserLocations(JSON.parse(savedUserLocs));
+                        if (savedHistory) setHistory(JSON.parse(savedHistory));
+                        if (savedMonthlyTotals) setMonthlyTotals(JSON.parse(savedMonthlyTotals));
+                    } catch (e) {
+                        console.error("Failed to parse data from localStorage", e);
+                        setError("Could not load saved data. It might be corrupted.");
+                    }
+                };
+                loadData();
+            }, []);
+
+            // Effect to save data to localStorage whenever it changes
+            useEffect(() => {
+                try {
+                    localStorage.setItem('mileageAppHome', JSON.stringify(homeAddress));
+                    localStorage.setItem('mileageAppWork', JSON.stringify(workAddress));
+                    localStorage.setItem('mileageAppManualCommute', JSON.stringify(manualCommuteMiles));
+                    localStorage.setItem('userMileageLocations', JSON.stringify(userLocations));
+                    localStorage.setItem('mileageAppHistory', JSON.stringify(history));
+                    localStorage.setItem('mileageAppMonthlyTotals', JSON.stringify(monthlyTotals));
+                } catch (e) {
+                    console.error("Failed to save data to localStorage", e);
+                    setError("Could not save data. Changes may not persist.");
+                }
+            }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals]);
+            
+            // Combine LAUSD list with user-saved locations
+            const combinedLocations = useMemo(() => {
+                const allLocations = [...allLausdLocations, ...userLocations];
+                const uniqueLocations = Array.from(new Map(allLocations.map(loc => [loc.address.toLowerCase(), loc])).values());
+                return uniqueLocations.sort((a, b) => a.name.localeCompare(b.name));
+            }, [userLocations]);
+
+            // Set the next "From" location
+            useEffect(() => {
+                if (trips.length > 0) {
+                    setFromLocation(trips[trips.length - 1].to);
+                } else {
+                    setFromLocation(homeLocation);
+                }
+                setToLocation({ name: '', address: '' });
+            }, [trips, homeLocation]);
+
+            // Close dropdown on outside click
+            useEffect(() => {
+                const handleClickOutside = (event) => {
+                    if (searchRef.current && !searchRef.current.contains(event.target)) {
+                        setIsDropdownVisible(false);
+                    }
+                };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => document.removeEventListener("mousedown", handleClickOutside);
+            }, []);
+
+            const getMileage = async (fromAddr, toAddr) => {
+                setError(null);
+                if (!fromAddr || !toAddr) {
+                    setError("Cannot calculate mileage for empty addresses.");
+                    return null;
+                }
+                const prompt = `What is the shortest driving distance in miles between "${fromAddr}" and "${toAddr}", ignoring all traffic conditions? Please respond with only the numerical value, rounded to the nearest whole number. For example: 12`;
+                
+                try {
+                    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                    const apiKey = "";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) throw new Error(`API request failed: ${response.statusText}`);
+                    const result = await response.json();
+                    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        const match = text.match(/(\d+)/);
+                        if (match) return Math.round(parseFloat(match[0]));
+                        throw new Error("Could not parse distance from the API response.");
+                    }
+                    throw new Error("Unexpected API response format.");
+                } catch (err) {
+                    console.error("Error fetching mileage:", err);
+                    setError(`Mileage API Error: ${err.message}`);
+                    return null;
+                }
+            };
+
+            const handleAddTrip = async () => {
+                if (!fromLocation.address || !toLocation.address) {
+                    setError("Please fill out both 'From' and 'To' locations.");
+                    return;
+                }
+
+                const isCommute = (fromLocation.name === 'Home' && toLocation.name === 'Work') || (fromLocation.name === 'Work' && toLocation.name === 'Home');
+                
+                let mileage;
+
+                if (isCommute) {
+                    mileage = manualCommuteMiles;
+                } else {
+                    setIsLoading(true);
+                    mileage = await getMileage(fromLocation.address, toLocation.address);
+                    setIsLoading(false);
+                }
+                
+                if (mileage !== null) {
+                    setTrips([...trips, { id: Date.now(), from: fromLocation, to: toLocation, miles: Number(mileage) }]);
+                }
+            };
+
+            const handleDeleteTrip = (id) => {
+                setTrips(currentTrips => currentTrips.filter(trip => trip.id !== id));
+            };
+
+            const getNextWeekday = (dateString) => {
+                const date = new Date(dateString + 'T00:00:00');
+                date.setDate(date.getDate() + 1);
+                while (date.getDay() === 6 || date.getDay() === 0) { // Saturday or Sunday
+                    date.setDate(date.getDate() + 1);
+                }
+                return date.toISOString().split('T')[0];
+            };
+
+            const handleFinalizeDay = () => {
+                if (trips.length === 0) {
+                    setError("Add at least one trip before finalizing the day.");
+                    return;
+                }
+                
+                const totalMiles = trips.reduce((acc, trip) => acc + trip.miles, 0);
+                const deduction = manualCommuteMiles * 2;
+                const netMiles = totalMiles - deduction;
+
+                const finalizedDay = {
+                    date: currentDate,
+                    trips: trips,
+                    totalMiles: totalMiles,
+                    commuteDeduction: deduction,
+                    netMiles: netMiles,
+                    id: Date.now()
+                };
+
+                setHistory(prevHistory => [...prevHistory, finalizedDay].sort((a, b) => new Date(a.date) - new Date(b.date)));
+                setTrips([]);
+                setCurrentDate(getNextWeekday(currentDate));
+            };
+
+            const handleDeleteHistoryDay = (dayId) => {
+                if (window.confirm("Are you sure you want to delete this entire day's entry?")) {
+                    setHistory(prevHistory => prevHistory.filter(day => day.id !== dayId));
+                }
+            };
+
+            const handleEditHistoryDay = (dayToEdit) => {
+                if (trips.length > 0) {
+                    alert("Please finalize or clear your current day's log before editing a past entry.");
+                    return;
+                }
+                setCurrentDate(dayToEdit.date);
+                setTrips(dayToEdit.trips);
+                setHistory(prevHistory => prevHistory.filter(day => day.id !== dayToEdit.id));
+            };
+
+            const handleFinalizeMonth = () => {
+                const [year, month] = currentDate.split('-');
+                const monthToFinalize = `${year}-${month}`;
+                
+                const daysInMonth = history.filter(day => day.date.startsWith(monthToFinalize));
+                if (daysInMonth.length === 0) {
+                    setError(`No finalized days found for ${new Date(monthToFinalize + '-02').toLocaleString('default', { month: 'long', year: 'numeric' })}.`);
+                    return;
+                }
+
+                const totalNetMiles = daysInMonth.reduce((acc, day) => acc + day.netMiles, 0);
+                const monthName = new Date(monthToFinalize + '-02').toLocaleString('default', { month: 'long', year: 'numeric' });
+                
+                const newMonthlyTotal = {
+                    id: monthToFinalize,
+                    name: monthName,
+                    totalNetMiles: totalNetMiles
+                };
+
+                setMonthlyTotals(prev => {
+                    const existingIndex = prev.findIndex(m => m.id === monthToFinalize);
+                    if (existingIndex > -1) {
+                        const updated = [...prev];
+                        updated[existingIndex] = newMonthlyTotal;
+                        return updated;
+                    } else {
+                        return [...prev, newMonthlyTotal].sort((a,b) => new Date(a.id) - new Date(b.id));
+                    }
+                });
+            };
+
+            const handleLocationChange = (e, setLocationFunc) => {
+                const query = e.target.value;
+                setLocationFunc({ name: query, address: query });
+
+                if (query.length > 1) {
+                    const filtered = combinedLocations.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()));
+                    setFilteredLocations(filtered);
+                    setIsDropdownVisible(true);
+                } else {
+                    setIsDropdownVisible(false);
+                }
+            };
+            
+            const handleLocationSelect = (location, setLocationFunc) => {
+                setLocationFunc(location);
+                setIsDropdownVisible(false);
+            };
+
+            const handleSaveNewLocation = () => {
+                if (!newLocName.trim() || !newLocAddress.trim()) {
+                    alert("Please provide both a name and an address for the new location.");
+                    return;
+                }
+                const newLocation = { name: newLocName.trim(), address: newLocAddress.trim() };
+                setUserLocations([...userLocations, newLocation]);
+                setNewLocName(''); setNewLocAddress(''); setShowAddForm(false);
+            };
+            
+            const generateCSVContent = (monthId = null) => {
+                const headers = ['Date', 'Nature of Work', 'From', 'To', 'Total Mileage'];
+                let csvContent = headers.join(',') + '\r\n';
+                
+                const dataToExport = monthId ? history.filter(d => d.date.startsWith(monthId)) : history;
+
+                dataToExport.forEach(day => {
+                    day.trips.forEach((trip, index) => {
+                        const row = [
+                            index === 0 ? formatDate(day.date) : '',
+                            getNatureOfWork(trip),
+                            `"${trip.from.name.replace(/"/g, '""')}"`,
+                            `"${trip.to.name.replace(/"/g, '""')}"`,
+                            trip.miles
+                        ];
+                        csvContent += row.join(',') + '\r\n';
+                    });
+                    csvContent += `,,,Round Trip Deduction:,-${day.commuteDeduction}\r\n`;
+                    csvContent += `,,,Daily Total:,${day.netMiles}\r\n\r\n`;
+                });
+                return csvContent;
+            };
+
+            const handleDownloadCSV = (monthId = null) => {
+                const csvContent = generateCSVContent(monthId);
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                if (link.download !== undefined) {
+                    const url = URL.createObjectURL(blob);
+                    const filename = monthId ? `mileage_report_${monthId}.csv` : 'mileage_report_full.csv';
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            };
+            
+            const formatDate = (dateString) => {
+                const date = new Date(dateString + 'T00:00:00'); // Ensure correct date parsing
+                return new Intl.DateTimeFormat('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }).format(date);
+            };
+
+            const getNatureOfWork = (trip) => {
+                if (trip.from.name === 'Home' && trip.to.name === 'Work') return 'Drive to Office';
+                if (trip.from.name !== 'Home' && trip.to.name === 'Work') return 'Return to Office';
+                if (trip.to.name === 'Home') return 'Return to Home';
+                return 'School Visit';
+            };
+
+            const currentMonthSummary = useMemo(() => {
+                if (history.length === 0) return null;
+                const [year, month] = currentDate.split('-');
+                const monthId = `${year}-${month}`;
+                const daysInMonth = history.filter(day => day.date.startsWith(monthId));
+                if (daysInMonth.length === 0) return null;
+
+                const totalNetMiles = daysInMonth.reduce((acc, day) => acc + day.netMiles, 0);
+                const monthName = new Date(monthId + '-02').toLocaleString('default', { month: 'long', year: 'numeric' });
+
+                return { name: monthName, totalNetMiles };
+            }, [history, currentDate]);
+
+
+            return (
+                <div className="bg-slate-50 min-h-screen font-sans text-slate-800">
+                    <div className="container mx-auto p-4 md:p-8 max-w-7xl">
+                        <header className="text-center mb-8">
+                            <h1 className="text-4xl font-bold text-slate-900">Mileage Log Generator</h1>
+                            <p className="text-slate-600 mt-2">Create, manage, and export your mileage logs.</p>
+                        </header>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* --- Input & Current Log Section --- */}
+                            <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
+                                <h2 className="text-2xl font-semibold border-b pb-3 text-slate-800">Trip Entry</h2>
+                                
+                                {/* --- Address Setup --- */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="font-medium text-slate-700">Home Address</label>
+                                        {isEditingHome ? (
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <input type="text" value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" />
+                                                <button onClick={() => setIsEditingHome(false)} className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"><Save className="w-5 h-5"/></button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-between p-2 bg-slate-100 rounded-md mt-1">
+                                                <p className="text-slate-600 truncate">{homeAddress}</p>
+                                                <button onClick={() => setIsEditingHome(true)} className="text-sm text-blue-600 hover:underline ml-2">Edit</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="font-medium text-slate-700">Work Address</label>
+                                        {isEditingWork ? (
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <input type="text" value={workAddress} onChange={(e) => setWorkAddress(e.target.value)} className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" />
+                                                <button onClick={() => setIsEditingWork(false)} className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"><Save className="w-5 h-5"/></button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-between p-2 bg-slate-100 rounded-md mt-1">
+                                                <p className="text-slate-600 truncate">{workAddress}</p>
+                                                <button onClick={() => setIsEditingWork(true)} className="text-sm text-blue-600 hover:underline ml-2">Edit</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                
+                                {/* --- Manual Commute Input --- */}
+                                <div className="space-y-2">
+                                    <label htmlFor="commute-miles" className="font-medium text-slate-700">One-Way Commute Miles</label>
+                                    <input 
+                                        type="number" 
+                                        id="commute-miles" 
+                                        value={manualCommuteMiles} 
+                                        onChange={e => setManualCommuteMiles(Number(e.target.value))} 
+                                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+
+                                {/* --- Date Picker --- */}
+                                <div className="space-y-2">
+                                     <label htmlFor="trip-date" className="font-medium text-slate-700">Trip Date</label>
+                                     <input type="date" id="trip-date" value={currentDate} onChange={e => setCurrentDate(e.target.value)} className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"/>
+                                </div>
+
+                                {/* --- From & To Inputs --- */}
+                                <div className="space-y-2">
+                                    <label htmlFor="from" className="font-medium text-slate-700">From</label>
+                                    <div className="flex gap-2">
+                                        <input id="from" type="text" value={fromLocation.name} onChange={(e) => handleLocationChange(e, setFromLocation)} placeholder="Starting address" className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" />
+                                        <button onClick={() => setFromLocation(homeLocation)} title="Set to Home" className="p-2 bg-slate-200 hover:bg-slate-300 rounded-md"><Home className="w-5 h-5 text-slate-600"/></button>
+                                        <button onClick={() => setFromLocation(workLocation)} title="Set to Work" className="p-2 bg-slate-200 hover:bg-slate-300 rounded-md"><Briefcase className="w-5 h-5 text-slate-600"/></button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2" ref={searchRef}>
+                                     <label htmlFor="to" className="font-medium text-slate-700">To</label>
+                                     <div className="relative">
+                                        <div className="flex gap-2">
+                                            <input id="to" type="text" value={toLocation.name} onChange={(e) => handleLocationChange(e, setToLocation)} placeholder="Search schools or type any address" className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" autoComplete="off" />
+                                            <button onClick={() => setToLocation(homeLocation)} title="Set to Home" className="p-2 bg-slate-200 hover:bg-slate-300 rounded-md"><Home className="w-5 h-5 text-slate-600"/></button>
+                                            <button onClick={() => setToLocation(workLocation)} title="Set to Work" className="p-2 bg-slate-200 hover:bg-slate-300 rounded-md"><Briefcase className="w-5 h-5 text-slate-600"/></button>
+                                        </div>
+                                        {isDropdownVisible && (
+                                            <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+                                                {filteredLocations.length > 0 ? (
+                                                    filteredLocations.map(loc => (
+                                                        <div key={loc.address} onClick={() => handleLocationSelect(loc, setToLocation)} className="p-3 hover:bg-blue-50 cursor-pointer border-b"><p className="font-semibold">{loc.name}</p><p className="text-sm text-slate-500">{loc.address}</p></div>
+                                                    ))
+                                                ) : (toLocation.name.length > 1 && <p className="p-3 text-slate-500 text-center">No matches found.</p>)}
+                                            </div>
+                                        )}
+                                     </div>
+                                </div>
+
+                                {/* --- Action Buttons --- */}
+                                <div className="flex items-center gap-2 pt-2">
+                                    <button onClick={handleAddTrip} disabled={isLoading} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:bg-blue-300 transition-all">
+                                        {isLoading ? <><Loader2 className="animate-spin w-5 h-5" />...</> : <><PlusCircle className="w-5 h-5" />Add Trip</>}
+                                    </button>
+                                    <button onClick={() => setShowAddForm(!showAddForm)} title="Add a new custom location" className="p-3 bg-slate-200 hover:bg-slate-300 rounded-lg"><School className="w-5 h-5 text-slate-600"/></button>
+                                </div>
+                                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                                
+                                {/* --- Add New Location Form --- */}
+                                {showAddForm && (
+                                    <div className="p-4 bg-blue-50 rounded-lg space-y-3 border border-blue-200">
+                                        <h3 className="font-semibold text-slate-700">Save a New Location</h3>
+                                        <input type="text" placeholder="Location Name (e.g., Main Office)" value={newLocName} onChange={e => setNewLocName(e.target.value)} className="w-full p-2 border rounded-md" />
+                                        <input type="text" placeholder="Full Address" value={newLocAddress} onChange={e => setNewLocAddress(e.target.value)} className="w-full p-2 border rounded-md" />
+                                        <div className="flex gap-2">
+                                            <button onClick={handleSaveNewLocation} className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"><Save className="w-5 h-5"/>Save</button>
+                                            <button onClick={() => setShowAddForm(false)} className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-slate-500 text-white font-semibold rounded-lg hover:bg-slate-600"><X className="w-5 h-5"/>Cancel</button>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* --- Current Day's Log --- */}
+                                <div className="pt-4">
+                                     <h3 className="text-xl font-semibold border-b pb-2 mb-3 text-slate-800">Log for {formatDate(currentDate)}</h3>
+                                     <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
+                                        {trips.length === 0 ? (<p className="text-slate-500 text-center py-4">No trips added for this date yet.</p>) : (trips.map((trip) => (
+                                            <div key={trip.id} className="flex items-center justify-between bg-slate-50 p-2 rounded-lg">
+                                                <div className="flex-1 min-w-0"><p className="font-medium text-slate-700 truncate">{trip.from.name} → {trip.to.name}</p></div>
+                                                <p className="font-bold text-blue-600 mx-4">{trip.miles} mi</p>
+                                                <button onClick={() => handleDeleteTrip(trip.id)} className="p-1 text-red-500 hover:bg-red-100 rounded-full"><Trash2 className="w-4 h-4" /></button>
+                                            </div>)))}
+                                     </div>
+                                     {trips.length > 0 && (
+                                        <div className="pt-4 flex justify-end">
+                                            <button onClick={handleFinalizeDay} disabled={isLoading} className="flex items-center justify-center gap-2 py-2 px-4 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 disabled:bg-green-300">
+                                                {isLoading ? <><Loader2 className="animate-spin w-5 h-5" />Finalizing...</> : <><CheckCircle className="w-5 h-5" />Finalize Day</>}
+                                            </button>
+                                        </div>
+                                     )}
+                                </div>
+                            </div>
+
+                            {/* --- History & Data Management Section --- */}
+                            <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
+                                <div className="flex justify-between items-center border-b pb-3">
+                                    <h2 className="text-2xl font-semibold text-slate-800">Mileage History</h2>
+                                     {history.length > 0 && (
+                                        <div className="flex items-center gap-2">
+                                            <button onClick={() => handleCopyToClipboard()} title="Copy as Tab-Separated Text" className="flex items-center gap-2 py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">
+                                                {isCopied ? <ClipboardCopy className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                                            </button>
+                                            <button onClick={() => handleDownloadCSV()} title="Download as CSV File" className="flex items-center gap-2 py-2 px-4 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">
+                                                <Download className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                     )}
+                                </div>
+                                <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-2">
+                                   {history.length === 0 ? (
+                                        <div className="text-center py-8 px-4 bg-slate-50 rounded-lg">
+                                            <p className="text-slate-500">Your finalized daily logs will appear here.</p>
+                                        </div>
+                                   ) : (
+                                        <table ref={outputTableRef} className="w-full text-sm" style={{borderCollapse: 'collapse'}}>
+                                            <thead>
+                                                <tr>
+                                                    <th className="p-2 text-left bg-slate-100 font-semibold border-b-2 border-slate-200">Date</th>
+                                                    <th className="p-2 text-left bg-slate-100 font-semibold border-b-2 border-slate-200">Nature of Work</th>
+                                                    <th className="p-2 text-left bg-slate-100 font-semibold border-b-2 border-slate-200">From</th>
+                                                    <th className="p-2 text-left bg-slate-100 font-semibold border-b-2 border-slate-200">To</th>
+                                                    <th className="p-2 text-right bg-slate-100 font-semibold border-b-2 border-slate-200">Total Mileage</th>
+                                                    <th className="p-2 text-right bg-slate-100 font-semibold border-b-2 border-slate-200">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {history.map((day, dayIndex) => (
+                                                    <React.Fragment key={day.id}>
+                                                        {day.trips.map((trip, tripIndex) => (
+                                                            <tr key={trip.id} className="border-b border-slate-100">
+                                                                <td className="p-2">{tripIndex === 0 ? formatDate(day.date) : ''}</td>
+                                                                <td className="p-2">{getNatureOfWork(trip)}</td>
+                                                                <td className="p-2">{trip.from.name}</td>
+                                                                <td className="p-2">{trip.to.name}</td>
+                                                                <td className="p-2 text-right">{trip.miles}</td>
+                                                                <td></td>
+                                                            </tr>
+                                                        ))}
+                                                        <tr className="font-semibold bg-slate-50">
+                                                            <td colSpan="4" className="p-2 text-right border-t-2 border-slate-200">Round Trip Deduction:</td>
+                                                            <td className="p-2 text-right border-t-2 border-slate-200">-{day.commuteDeduction}</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr className="font-bold text-lg bg-slate-100">
+                                                            <td colSpan="4" className={`p-2 text-right`}>Daily Total:</td>
+                                                            <td className={`p-2 text-right`}>{day.netMiles}</td>
+                                                            <td className="p-2 text-right">
+                                                                <div className="flex gap-2 justify-end">
+                                                                    <button onClick={() => handleEditHistoryDay(day)} className="p-1 text-blue-600 hover:bg-blue-100 rounded-full"><Pencil className="w-4 h-4"/></button>
+                                                                    <button onClick={() => handleDeleteHistoryDay(day.id)} className="p-1 text-red-500 hover:bg-red-100 rounded-full"><Trash2 className="w-4 h-4"/></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        { dayIndex < history.length -1 && (
+                                                            <tr className="bg-white"><td colSpan="6" className="p-2">&nbsp;</td></tr>
+                                                        )}
+                                                    </React.Fragment>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                   )}
+                                </div>
+                                
+                                {history.length > 0 && (
+                                    <div className="pt-4 border-t flex justify-between items-center">
+                                        {currentMonthSummary && <div className="text-sm"><span className="font-semibold">{currentMonthSummary.name} Running Total:</span> <span className="font-bold">{currentMonthSummary.totalNetMiles} miles</span></div>}
+                                        <button onClick={handleFinalizeMonth} className="flex items-center gap-2 py-2 px-4 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700">
+                                            <FileBarChart2 className="w-5 h-5"/> Finalize Month
+                                        </button>
+                                    </div>
+                                )}
+                                
+                                <div className="pt-6 border-t">
+                                     <h3 className="font-semibold text-slate-700 mb-2">Monthly Totals</h3>
+                                     {monthlyTotals.length > 0 ? (
+                                        <div className="space-y-2">
+                                            {monthlyTotals.map(month => (
+                                                <div key={month.id} className="flex justify-between items-center p-2 bg-slate-100 rounded-md">
+                                                    <div>
+                                                        <span className="font-semibold">{month.name}:</span>
+                                                        <span className="font-bold ml-2">{month.totalNetMiles} miles</span>
+                                                    </div>
+                                                    <button onClick={() => handleDownloadCSV(month.id)} title={`Download ${month.name} report`} className="p-1 text-indigo-600 hover:bg-indigo-100 rounded-full"><Download className="w-4 h-4"/></button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                     ) : <p className="text-slate-500 text-sm">No monthly summaries yet.</p>}
+                                </div>
+
+                                 {/* --- Data Management --- */}
+                                 <div className="pt-6 border-t">
+                                    <h3 className="font-semibold text-slate-700 mb-2">Data Management</h3>
+                                    <div className="flex flex-col sm:flex-row gap-2">
+                                        <button onClick={() => {if(window.confirm('Are you sure you want to delete all mileage history?')){setHistory([]); setMonthlyTotals([]);}}} className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-all">
+                                            <Trash2 className="w-4 h-4"/> Clear All History
+                                        </button>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
-  </body>
+</body>
 </html>
