@@ -802,43 +802,45 @@
         ];
 
         const App = () => {
+            const { useState, useRef, useEffect, useMemo } = React;
+
             // State for trips and logs
-            const [trips, setTrips] = React.useState([]);
-            const [history, setHistory] = React.useState([]);
-            const [monthlyTotals, setMonthlyTotals] = React.useState([]);
+            const [trips, setTrips] = useState([]);
+            const [history, setHistory] = useState([]);
+            const [monthlyTotals, setMonthlyTotals] = useState([]);
 
             // State for locations
-            const [fromLocation, setFromLocation] = React.useState({ name: '', address: '' });
-            const [toLocation, setToLocation] = React.useState({ name: '', address: '' });
-            const [homeAddress, setHomeAddress] = React.useState('123 Main St, Los Angeles, CA 90012');
-            const [workAddress, setWorkAddress] = React.useState('333 S Beaudry Ave, Los Angeles, CA 90017');
-            const [isEditingHome, setIsEditingHome] = React.useState(false);
-            const [isEditingWork, setIsEditingWork] = React.useState(false);
+            const [fromLocation, setFromLocation] = useState({ name: '', address: '' });
+            const [toLocation, setToLocation] = useState({ name: '', address: '' });
+            const [homeAddress, setHomeAddress] = useState('123 Main St, Los Angeles, CA 90012');
+            const [workAddress, setWorkAddress] = useState('333 S Beaudry Ave, Los Angeles, CA 90017');
+            const [isEditingHome, setIsEditingHome] = useState(false);
+            const [isEditingWork, setIsEditingWork] = useState(false);
             
             // State for user-managed school list from CSV and saved commute mileage
-            const [userLocations, setUserLocations] = React.useState([]);
-            const [manualCommuteMiles, setManualCommuteMiles] = React.useState(20);
+            const [userLocations, setUserLocations] = useState([]);
+            const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
             
             // UI and API states
-            const [isLoading, setIsLoading] = React.useState(false);
-            const [error, setError] = React.useState(null);
-            const [isCopied, setIsCopied] = React.useState(false);
-            const [showAddForm, setShowAddForm] = React.useState(false);
-            const [newLocName, setNewLocName] = React.useState('');
-            const [newLocAddress, setNewLocAddress] = React.useState('');
-            const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().split('T')[0]);
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState(null);
+            const [isCopied, setIsCopied] = useState(false);
+            const [showAddForm, setShowAddForm] = useState(false);
+            const [newLocName, setNewLocName] = useState('');
+            const [newLocAddress, setNewLocAddress] = useState('');
+            const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
 
-            const [filteredLocations, setFilteredLocations] = React.useState([]);
-            const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
-            const searchRef = React.useRef(null);
-            const outputTableRef = React.useRef(null);
+            const [filteredLocations, setFilteredLocations] = useState([]);
+            const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+            const searchRef = useRef(null);
+            const outputTableRef = useRef(null);
 
             // Memoize location objects to prevent unnecessary re-renders
-            const homeLocation = React.useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
-            const workLocation = React.useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
+            const homeLocation = useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
+            const workLocation = useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
 
             // Load all saved data from localStorage on initial render
-            React.useEffect(() => {
+            useEffect(() => {
                 const loadData = () => {
                     try {
                         const savedHome = localStorage.getItem('mileageAppHome');
@@ -863,7 +865,7 @@
             }, []);
 
             // Effect to save data to localStorage whenever it changes
-            React.useEffect(() => {
+            useEffect(() => {
                 try {
                     localStorage.setItem('mileageAppHome', JSON.stringify(homeAddress));
                     localStorage.setItem('mileageAppWork', JSON.stringify(workAddress));
@@ -878,14 +880,14 @@
             }, [homeAddress, workAddress, manualCommuteMiles, userLocations, history, monthlyTotals]);
             
             // Combine LAUSD list with user-saved locations
-            const combinedLocations = React.useMemo(() => {
+            const combinedLocations = useMemo(() => {
                 const allLocations = [...hardcodedLausdLocations, ...userLocations];
                 const uniqueLocations = Array.from(new Map(allLocations.map(loc => [loc.address.toLowerCase(), loc])).values());
                 return uniqueLocations.sort((a, b) => a.name.localeCompare(b.name));
             }, [userLocations]);
 
             // Set the next "From" location
-            React.useEffect(() => {
+            useEffect(() => {
                 if (trips.length > 0) {
                     setFromLocation(trips[trips.length - 1].to);
                 } else {
@@ -895,7 +897,7 @@
             }, [trips, homeLocation]);
 
             // Close dropdown on outside click
-            React.useEffect(() => {
+            useEffect(() => {
                 const handleClickOutside = (event) => {
                     if (searchRef.current && !searchRef.current.contains(event.target)) {
                         setIsDropdownVisible(false);
