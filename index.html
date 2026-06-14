@@ -4,16 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mileage Log Generator</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React Libraries -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel to transpile JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- SVG Icon Components (Self-Contained) ---
+        // --- SVG Icon Components ---
         const Home = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>);
         const School = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 5v17"/><path d="M6 5v17"/><path d="M12 5v17"/></svg>);
         const PlusCircle = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>);
@@ -31,6 +34,7 @@
         const Pencil = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="2" x2="22" y2="6"/><path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"/></svg>);
         const FileBarChart2 = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 18v-2"/><path d="M12 18v-4"/><path d="M16 18v-6"/></svg>);
 
+        // List populated from lausd schools for gemini 250703-1.csv[cite: 1]
         const hardcodedLausdLocations = [
             { name: "107th St El", address: "147 E 107TH ST, LOS ANGELES, CA 90003" },
             { name: "109th St El", address: "10915 S MC KINLEY AVE, LOS ANGELES, CA 90059" },
@@ -227,7 +231,7 @@
             { name: "Coldwater Cyn El", address: "6850 COLDWATER CANYON AVE, NORTH HOLLYWOOD, CA 91605" },
             { name: "Colfax CEl", address: "4935 COLFAX AVE, VALLEY VILLAGE, CA 91601" },
             { name: "Coliseum St El", address: "4400 COLISEUM ST, LOS ANGELES, CA 90016" },
-            { name: "Columbus Ave El", address: "6700 COLUMBUS AVE, VAN NUYS, CA 91405" },
+            { name: "Columbus Ave El", address: "6700 COLUMBUS AVE, VAN Nuys, CA 91405" },
             { name: "Commonwlth Ave El", address: "215 S COMMONWEALTH AVE, LOS ANGELES, CA 90004" },
             { name: "Community El Mag CS", address: "11301 BELLAGIO RD, LOS ANGELES, CA 90049" },
             { name: "Compton Ave El", address: "1515 E 104TH ST, LOS ANGELES, CA 90002" },
@@ -659,7 +663,7 @@
             { name: "Sepulveda MS", address: "15330 PLUMMER ST, NORTH HILLS, CA 91343" },
             { name: "Serrania Ave CES", address: "5014 SERRANIA AVE, WOODLAND HILLS, CA 91364" },
             { name: "Sharp Ave El", address: "13800 PIERCE ST, ARLETA, CA 91331" },
-            { name: "Shenandoah St El", address: "2450 SHENANDOAH ST, LOS ANGELES, CA 90034" },
+            { name: "Paragraph St El", address: "2450 SHENANDOAH ST, LOS ANGELES, CA 90034" },
             { name: "Sheridan St El", address: "416 N CORNWELL ST, LOS ANGELES, CA 90033" },
             { name: "Sherman Oaks El CS", address: "14755 GREENLEAF ST, SHERMAN OAKS, CA 91403" },
             { name: "Shirley Ave El", address: "19452 HART ST, RESEDA, CA 91335" },
@@ -724,7 +728,7 @@
             { name: "VA Ldshp & Pub Srvc", address: "474 HARTFORD AVE, LOS ANGELES, CA 90017" },
             { name: "VA STEAM", address: "4010 E RAMBOZ DR, LOS ANGELES, CA 90063" },
             { name: "Valerio St El", address: "15035 VALERIO ST, VAN NUYS, CA 91405" },
-            { name: "Valley Acad Arts/Sci", address: "10445 BALBOA BLVD, GRANADA HILLS, CA 91344" },
+            { name: "Valley Academy Arts/Sci", address: "10445 BALBOA BLVD, GRANADA HILLS, CA 91344" },
             { name: "Valley View El", address: "6921 WOODROW WILSON DR, LOS ANGELES, CA 90068" },
             { name: "Van Deene Ave El", address: "826 W JAVELIN ST, TORRANCE, CA 90502" },
             { name: "Van Gogh Chtr", address: "17160 VAN GOGH ST, GRANADA HILLS, CA 91344" },
@@ -755,7 +759,7 @@
             { name: "Walgrove Ave El", address: "1630 WALGROVE AVE, LOS ANGELES, CA 90066" },
             { name: "Walnut Park El", address: "2642 OLIVE ST, HUNTINGTON PARK, CA 90255" },
             { name: "Walnut Park MS SJ/SL", address: "7500 MARBRISA AVE, WALNUT PARK, CA 90255" },
-            { name: "Warner Ave El", address: "615 HOLMBY AVE, LOS ANGELES, CA 90024" },
+            { name: "Warner Ave El", address: "615 Holmby Ave, Los Angeles, CA 90024" },
             { name: "Washington PC", address: "860 W 112TH ST, LOS ANGELES, CA 90044" },
             { name: "Washington Prep SH", address: "10860 S DENKER AVE, LOS ANGELES, CA 90047" },
             { name: "Webster MS", address: "11330 GRAHAM PL, LOS ANGELES, CA 90064" },
@@ -806,12 +810,10 @@
         const App = () => {
             const { useState, useRef, useEffect, useMemo } = React;
 
-            // State for trips and logs
             const [trips, setTrips] = useState([]);
             const [history, setHistory] = useState([]);
             const [monthlyTotals, setMonthlyTotals] = useState([]);
 
-            // State for locations
             const [fromLocation, setFromLocation] = useState({ name: '', address: '' });
             const [toLocation, setToLocation] = useState({ name: '', address: '' });
             const [homeAddress, setHomeAddress] = useState('123 Main St, Los Angeles, CA 90012');
@@ -819,11 +821,9 @@
             const [isEditingHome, setIsEditingHome] = useState(false);
             const [isEditingWork, setIsEditingWork] = useState(false);
             
-            // State for user-managed school list from CSV and saved commute mileage
             const [userLocations, setUserLocations] = useState([]);
             const [manualCommuteMiles, setManualCommuteMiles] = useState(20);
             
-            // UI and API states
             const [isLoading, setIsLoading] = useState(false);
             const [error, setError] = useState(null);
             const [isCopied, setIsCopied] = useState(false);
@@ -840,11 +840,9 @@
             const searchRef = useRef(null);
             const outputTableRef = useRef(null);
 
-            // Memoize location objects
             const homeLocation = useMemo(() => ({ name: 'Home', address: homeAddress }), [homeAddress]);
             const workLocation = useMemo(() => ({ name: 'Work', address: workAddress }), [workAddress]);
 
-            // Load all saved data from localStorage on initial render
             useEffect(() => {
                 const loadData = () => {
                     try {
@@ -869,7 +867,6 @@
                 loadData();
             }, []);
 
-            // Effect to save data to localStorage whenever it changes
             useEffect(() => {
                 try {
                     localStorage.setItem('mileageAppHome', JSON.stringify(homeAddress));
@@ -995,7 +992,11 @@
                 
                 const totalMiles = trips.reduce((acc, trip) => acc + trip.miles, 0);
                 const deduction = manualCommuteMiles * 2;
-                const netMiles = totalMiles - deduction;
+                
+                // Enforce 0 mile floor logic[cite: 1]
+                const rawNetMiles = totalMiles - deduction;
+                const netMiles = Math.max(0, rawNetMiles);
+                const isCapped = rawNetMiles < 0;
 
                 const finalizedDay = {
                     date: currentDate,
@@ -1003,6 +1004,7 @@
                     totalMiles: totalMiles,
                     commuteDeduction: deduction,
                     netMiles: netMiles,
+                    isCapped: isCapped,
                     id: Date.now()
                 };
 
@@ -1094,7 +1096,6 @@
                     return;
                 }
 
-                // Map entries out into raw copy-pasteable javascript strings
                 const formattedLines = userLocations.map(loc => {
                     const safeName = loc.name.replace(/"/g, '\\"');
                     const safeAddr = loc.address.replace(/"/g, '\\"');
@@ -1108,7 +1109,7 @@
                     })
                     .catch(err => {
                         console.error("Failed to copy locations:", err);
-                        alert("Failed to automatically copy. Here is the data:\n\n" + formattedLines);
+                        alert("Failed to automatically copy data.");
                     });
             };
             
@@ -1182,10 +1183,15 @@
                     let textToCopy = '';
                     
                     for (const row of table.rows) {
-                        // Gather cells, drop the last column containing action items
                         const cells = Array.from(row.cells)
                             .slice(0, -1)
-                            .map(cell => cell.innerText.trim());
+                            .map(cell => {
+                                const badge = cell.querySelector('.cap-badge');
+                                if (badge) {
+                                    return cell.innerText.replace(badge.innerText, '').trim();
+                                }
+                                return cell.innerText.trim();
+                            });
                         textToCopy += cells.join('\t') + '\n';
                     }
 
@@ -1199,7 +1205,7 @@
                         setTimeout(() => setIsCopied(false), 2000);
                     } catch (err) {
                         console.error('Failed to copy text: ', err);
-                        setError("Failed to copy table layout. Please select and copy manually.");
+                        setError("Failed to copy table layout.");
                     }
                     document.body.removeChild(textarea);
                 }
@@ -1214,11 +1220,9 @@
                         </header>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" ref={searchRef}>
-                            {/* --- Input & Current Log Section --- */}
                             <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
                                 <h2 className="text-2xl font-semibold border-b pb-3 text-slate-800">Trip Entry</h2>
                                 
-                                {/* --- Address Setup --- */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label className="font-medium text-slate-700">Home Address</label>
@@ -1250,7 +1254,6 @@
                                     </div>
                                 </div>
                                 
-                                {/* --- Manual Commute Input --- */}
                                 <div className="space-y-2">
                                     <label htmlFor="commute-miles" className="font-medium text-slate-700">One-Way Commute Miles</label>
                                     <input 
@@ -1262,13 +1265,11 @@
                                     />
                                 </div>
 
-                                {/* --- Date Picker --- */}
                                 <div className="space-y-2">
                                      <label htmlFor="trip-date" className="font-medium text-slate-700">Trip Date</label>
                                      <input type="date" id="trip-date" value={currentDate} onChange={e => setCurrentDate(e.target.value)} className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"/>
                                 </div>
 
-                                {/* --- From & To Inputs --- */}
                                 <div className="space-y-2 relative">
                                     <label htmlFor="from" className="font-medium text-slate-700">From</label>
                                     <div className="flex gap-2">
@@ -1307,7 +1308,6 @@
                                      </div>
                                 </div>
 
-                                {/* --- Action Buttons --- */}
                                 <div className="flex items-center gap-2 pt-2">
                                     <button onClick={handleAddTrip} disabled={isLoading} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:bg-blue-300 transition-all">
                                         {isLoading ? <><Loader2 className="animate-spin w-5 h-5" />...</> : <><PlusCircle className="w-5 h-5" />Add Trip</>}
@@ -1316,7 +1316,6 @@
                                 </div>
                                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                                 
-                                {/* --- Add New Location Form --- */}
                                 {showAddForm && (
                                     <div className="p-4 bg-blue-50 rounded-lg space-y-3 border border-blue-200">
                                         <h3 className="font-semibold text-slate-700">Save a New Location</h3>
@@ -1329,7 +1328,6 @@
                                     </div>
                                 )}
                                 
-                                {/* --- Current Day's Log --- */}
                                 <div className="pt-4">
                                      <h3 className="text-xl font-semibold border-b pb-2 mb-3 text-slate-800">Log for {formatDate(currentDate)}</h3>
                                      <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
@@ -1350,7 +1348,6 @@
                                 </div>
                             </div>
 
-                            {/* --- History & Data Management Section --- */}
                             <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
                                 <div className="flex justify-between items-center border-b pb-3">
                                     <h2 className="text-2xl font-semibold text-slate-800">Mileage History</h2>
@@ -1383,6 +1380,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {/* Filter out 0-mile days for Word copy logic within handleCopyToClipboard[cite: 1] */}
                                                 {history.map((day, dayIndex) => (
                                                     <React.Fragment key={day.id}>
                                                         {day.trips.map((trip, tripIndex) => (
@@ -1402,7 +1400,14 @@
                                                         </tr>
                                                         <tr className="font-bold text-lg bg-slate-100">
                                                             <td colSpan="4" className={`p-2 text-right`}>Daily Total:</td>
-                                                            <td className={`p-2 text-right`}>{day.netMiles}</td>
+                                                            <td className="p-2 text-right flex items-center justify-end gap-2">
+                                                                {day.netMiles}
+                                                                {day.isCapped && (
+                                                                    <span className="cap-badge text-[10px] font-extrabold bg-amber-200 text-amber-900 border border-amber-400 px-2 py-0.5 rounded tracking-wide uppercase shadow-sm">
+                                                                        Commute Cap Applied
+                                                                    </span>
+                                                                )}
+                                                            </td>
                                                             <td className="p-2 text-right">
                                                                 <div className="flex gap-2 justify-end">
                                                                     <button onClick={() => handleEditHistoryDay(day)} className="p-1 text-blue-600 hover:bg-blue-100 rounded-full"><Pencil className="w-4 h-4"/></button>
@@ -1446,16 +1451,11 @@
                                      ) : <p className="text-slate-500 text-sm">No monthly summaries yet.</p>}
                                 </div>
 
-                                 {/* --- Data Management --- */}
                                  <div className="pt-6 border-t space-y-3">
                                     <h3 className="font-semibold text-slate-700">Data Management</h3>
                                     <div className="flex flex-col sm:flex-row gap-2">
-                                        <button 
-                                            onClick={handleExportCustomLocations} 
-                                            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-amber-600 text-white text-sm font-semibold rounded-lg hover:bg-amber-700 transition-all"
-                                        >
-                                            <Copy className="w-4 h-4"/> 
-                                            {isLocationsCopied ? "Copied Array Data!" : "Export Custom Locations"}
+                                        <button onClick={handleExportCustomLocations} className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-amber-600 text-white text-sm font-semibold rounded-lg hover:bg-amber-700 transition-all">
+                                            <Copy className="w-4 h-4"/> {isLocationsCopied ? "Copied Array Data!" : "Export Custom Locations"}
                                         </button>
                                         <button onClick={() => {if(window.confirm('Are you sure you want to delete all mileage history?')){setHistory([]); setMonthlyTotals([]);}}} className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-all">
                                             <Trash2 className="w-4 h-4"/> Clear All History
